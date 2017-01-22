@@ -1,11 +1,5 @@
 angular.module('dashboardApp', ['uiGmapgoogle-maps','chart.js'])
 
-.controller('MapController', ['$scope','uiGmapGoogleMapApi' , mapController])
-.controller('LineController',['$scope',lineController])
-.controller('DonutCtrl',['$scope',donutCtrl])
-.controller('BubbleCtrl',['$scope',bubbleCtrl])
-.controller('TimelineCtrl',['$scope',timelineCtrl])
-.controller('StoryTellingCtrl',['$scope',storyTelling])
 
 .config(function(uiGmapGoogleMapApiProvider,ChartJsProvider) {
     uiGmapGoogleMapApiProvider.configure({
@@ -13,83 +7,232 @@ angular.module('dashboardApp', ['uiGmapgoogle-maps','chart.js'])
         v: '3.20', //defaults to latest 3.X anyhow
         libraries: 'weather,geometry,visualization'
     });
-	
+ //
 	 ChartJsProvider.setOptions({ colors : [ '#803690', '#00ADF9', '#DCDCDC', '#46BFBD', '#FDB45C', '#949FB1', '#4D5360'] });
 })
 
-function mapController($scope,uiGmapGoogleMapApi ){
-	$scope.hello="Hello";
-	
+.controller("MainController", ['$scope','uiGmapGoogleMapApi',"$http", mainControllerFct])
+
+
+function mainControllerFct($scope,uiGmapGoogleMapApi, $http){
+		
+	/**
+	INiT
+	**/
  
+
+	$scope.loadedData = null;
+	$scope.mapping = {
+		GB : "GBR", CH :"CHE" ,AU: "AUT", RO: "ROU", HU: "HUN",
+		FR: "FRA", BG: "BGR",DE: "DEU",TM :"TKM", TJ: "TJK", KG: "KGZ", KZ :"KAZ" ,
+		MN : "MNG", UZ : "UZB", AM : "ARM", GE: "GEO", TR : "TUR", IR: "IRN"
+	}// any better way?
+
+	$scope.mongolRallyCountries = { GBR : {fillKey: "TOVISIT"},CHE : {fillKey: "TOVISIT"},AUT : {fillKey: "TOVISIT"},ROU : {fillKey: "TOVISIT"},HUN : {fillKey: "TOVISIT"}, FRA: {fillKey: "TOVISIT"}, BGR: {fillKey: "TOVISIT"}, DEU : {fillKey: "TOVISIT"},TKM: { fillKey: 'TOVISIT'},TJK : { fillKey: 'TOVISIT'},KGZ : { fillKey: 'TOVISIT'},KAZ : { fillKey: 'TOVISIT'}, MNG : { fillKey: 'TOVISIT'},UZB: {fillKey: 'TOVISIT'},ARM: {fillKey: 'TOVISIT'},GEO: {fillKey: 'TOVISIT'},TUR: {fillKey: 'TOVISIT'},IRN: {fillKey: 'TOVISIT'}
+};
+
+	var getClosestPlace = function(event){
+		$http({
+		  method: 'GET',
+		  url: 'http://api.geonames.org/findNearbyPlaceNameJSON?username=KMI_TD&lat='+//'https://maps.googleapis.com/maps/api/geocode/json?latlng='+
+		  event.latitude+'&lng='+event.longitude +"&lang=en&"
+		  //+'&key=AIzaSyDEJDKFSDl6ndtqnRykHyahKnoQG_KN_hQ&result_type=country'
+		}).then(function successCallback(response) {
+			//console.log(response.data.geonames[0].name);
+			event["closestplace"] = response.data.geonames[0].name;
+			
+		  }, function errorCallback(response,error) {
+			  console.log(error);
+		  });
+	}
+
+	var getCountry = function(i ) {
+		$http({
+		  method: 'GET',
+		  url: 'http://api.geonames.org/countryCode?username=KMI_TD&lat='+//'https://maps.googleapis.com/maps/api/geocode/json?latlng='+
+		  $scope.loadedData[i].latitude+'&lng='+$scope.loadedData[i].longitude
+		  //+'&key=AIzaSyDEJDKFSDl6ndtqnRykHyahKnoQG_KN_hQ&result_type=country'
+		}).then(function successCallback(response) {
+			// console.log(response.data);
+			$scope.mongolRallyCountries[$scope.mapping[response.data.trim()]] = { fillKey : "VISITED" };
+			
+		  }, function errorCallback(response,error) {
+			  console.log(error);
+		  });
+	}
 	
-	uiGmapGoogleMapApi.then(function(maps) {
+	
+
+	var atStart = function() {
+		return $http.get('docs/sensing_data/readings/event.json')
+		.success(function(data) {
+			$scope.loadedData = data;
+	 		if ($scope.loadedData.length > 1) {
+	 			for (step = 0; step < $scope.loadedData.length; step++) {
+	 				getCountry(step);
+	 				getClosestPlace($scope.loadedData[step]);
+	 			};
+	 		}
+			// console.log($scope.loadedData);
+		})
+		.error(function(data,status,error,config){
+			console.log(error);
+		});
+	}
+
+	var start = atStart();
+	
+	start.then(function(result){
 		
-		$scope.map = { "center" : {
-          "latitude" :55.567248,
-          "longitude" : 50.951069            
-        },
-        "zoom" : 3,
-	
-		"events": {}
+		 
+		/**
+		LINECHART
+		**/
+		// TODO here
+		$scope.loadedData = result.data;
+		console.log(1,$scope.mongolRallyCountries,$scope.mongolRallyCountries.CHE);
+		for (var key in $scope.mongolRallyCountries) { 
+			if (key == "GBR") {
+				console.log(2,key,$scope.mongolRallyCountries[key]);				
+			}
+			
+		}
+		
+		$scope.labels = $.map($scope.loadedData, function(value, index) {	    
+			return [timeConverter(value.timestamp)];
+		});
+		 	
+
+		$scope.series = ['fitbeat_I', 'fitbeat_M'];
+
+		f1 = $.map($scope.loadedData, function(value, index) {
+		    return [value["fitbeat1"]["beats_per_minute"]];
+		});
+
+		f2 = $.map($scope.loadedData, function(value, index) {
+		    return [value["fitbeat2"]["beats_per_minute"]];
+		});
+
+		$scope.data = [f1,  f2];
+
+		 $scope.onClick = function (points, evt) {
+		   console.log(points, evt);
+		 };
+
+		 $scope.datasetOverride = [{ yAxisID: 'y-axis-1' }, { yAxisID: 'y-axis-2' }];
+		 $scope.options = {
+		   scales: {
+		     yAxes: [
+		       {
+		         id: 'y-axis-1',
+		         type: 'linear',
+		         display: true,
+		         position: 'left'
+		       },
+		       {
+		         id: 'y-axis-2',
+		         type: 'linear',
+		         display: true,
+		         position: 'right'
+		       }
+		     ]
+		   }
+		 };
+		 
+		 
+		 
+ 	/**TIMELINE**/
+   
+ 	    var map = new Datamap({
+ 			element: document.getElementById('map_container'),
+ 			fills: {
+ 			            VISITED: '#008000',
+ 			            TOVISIT: '#ADD8E6',
+ 			            defaultFill: '#afafaf',
+ 						PITSTOP : "#000000"
+ 			        },
+ 	        data: $scope.mongolRallyCountries,
+ 			scope: 'world',
+ 		    // Zoom in on Africa
+ 		    setProjection: function(element) {
 				
-		};
+				
+ 		      var projection = d3.geo.equirectangular()
+ 		        .center([50, 40])
+ 		        // .rotate([4.4, 0])
+ 		        .scale(400)
+ 		        .translate([element.offsetWidth / 2, element.offsetHeight / 2]);
+ 		      var path = d3.geo.path()
+ 		        .projection(projection);
+ 	    		return {path: path, projection: projection};
+ 	  		}
+
+ 		});
 		
-	
-	
-		$scope.stroke = {color:'#edfd2e', weight : 3};
-		$scope.waypoints = [{"latitude": 52.0417200	, "longitude": -0.7558300, options:{ icon : {url: './docs/p.png', scaledSize:{ width: 23, height: 15.5 } }, optimized: false}},  {"latitude": 44.4268, "longitude":  26.1025, options : {opacity: 0.0}}	, 	{"latitude":50.310699,"longitude":50.599457 , options : {opacity: 0.0}}, {"latitude" : 51.8238785, "longitude": 107.60733800000003, options:{  optimized: false, icon : {url: './docs/T.png', scaledSize:{ width: 24.6, height: 21.6 } } }}];
-	});
-	
-	
 		
-} ;
+		map.bubbles($scope.loadedData, {
+		 popupTemplate: function(geo, data) {
+			 
+			 // TODO that's definitely a trick. (Discover why data and $scope.loadedData are different)
+			 var result = $scope.loadedData.filter(function( obj ) {
+			   return obj.timestamp == data.timestamp;
+			 });
+			 // console.log(result);
+			 
+			 return "<div class='hoverinfo' ng-bind=\"hoverEdit=true\" ><div class=\"text-center\"> Recorded on <b>" + timeConverter(data.timestamp)
+			 	+ "</b> next to "+result[0].closestplace+"</div><div><img class='img img-round' src="+data.img+"  alt='img'></div></div>";
+				// testo, nome , luogo, timestamp
+		 },
+		 borderColor: '#000000',
+		 borderWidth: 1,
+		 fillOpacity: 1
+		});
+		
+		
+		var step ;
+		var arcs = [];
+		if ($scope.loadedData.length > 1) {
+			for (step = 0; step < $scope.loadedData.length-1; step++) {
+				var arc = {
+					origin : {
+						latitude: $scope.loadedData[step]['latitude'],
+						longitude: $scope.loadedData[step]['longitude']
+					}, destination: {
+						latitude: $scope.loadedData[step+1]['latitude'],
+						longitude: $scope.loadedData[step+1]['longitude']
+					}
+				}
+				arcs.push(arc);
+			}
+		}
 
-function storyTelling($scope){
-	$scope.story = { kilom: 100 , activities: "Pasta", where: "Kobe"};
+		map.arc(arcs, { strokeColor: 'rgba(100, 10, 200, 1)', strokeWidth: 2, arcSharpness: 0});
+		
+		
+		
+});
+		
+		
+		//
+
+
 	
-};
 
-function lineController($scope){
-    $scope.labels = ["January", "February", "March", "April", "May", "June", "July"];
-     $scope.series = ['Series A', 'Series B'];
-     $scope.data = [
-       [65, 59, 80, 81, 56, 55, 40],
-       [28, 48, 40, 19, 86, 27, 90]
-     ];
-     $scope.onClick = function (points, evt) {
-       console.log(points, evt);
-     };
-     $scope.datasetOverride = [{ yAxisID: 'y-axis-1' }, { yAxisID: 'y-axis-2' }];
-     $scope.options = {
-       scales: {
-         yAxes: [
-           {
-             id: 'y-axis-1',
-             type: 'linear',
-             display: true,
-             position: 'left'
-           },
-           {
-             id: 'y-axis-2',
-             type: 'linear',
-             display: true,
-             position: 'right'
-           }
-         ]
-       }
-     };
+	/**
+	DONUT
+	**/
+	$scope.donut = {} ;
+	$scope.donut.labels = ["MNG","TAJ", "KAZ"]//["Sunny", "Rainy", "Cloudy"];
+	$scope.donut.data = [100, 50, 20];
 	
-};
+	/**
+	Bubble
+	**/  
+	
+	$scope.bubble = {};
+	$scope.bubble.series = ['Series A', 'Series B'];
 
-function donutCtrl($scope){
-	$scope.labels = ["Download Sales", "In-Store Sales", "Mail-Order Sales"];
-	  $scope.data = [300, 500, 100];
-};
-
-function bubbleCtrl($scope){
-	$scope.series = ['Series A', 'Series B'];
-
-	    $scope.data = [
+	$scope.bubble.data = [
 	      [{
 	        x: 40,
 	        y: 10,
@@ -109,9 +252,22 @@ function bubbleCtrl($scope){
 			  r: 10
 	      }]
 	    ];
-};
+}
 
-function timelineCtrl($scope){
-	$scope.hoverEdit = false;
-	$scope.events = [{type: "fa fa-check", badge:"primary",title: "I'm a title", when: "Thu, Nov. 11th", from: "Twitter",text: "hello",class:"timeline-inverted"}, {type: "fa fa-thumbs-up",text: "hello",title: "I'm another title",when: "Wed, Nov. 18th", from: "SMS", text: "hello", badge:"success"},{class:"timeline-inverted", type: "fa fa-fire-extinguisher", badge:"warning",text: "hello",title: "I'm another title",when: "Wed, Nov. 18th", from: "SMS", text: "hello", badge:"danger"},{type: "fa fa-car", badge:"warning",text: "hello",title: "I'm another title",when: "Wed, Nov. 18th", from: "SMS", text: "hello" }];
+
+function timeConverter(UNIX_timestamp){
+  var a = new Date(UNIX_timestamp * 1000);
+  var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  var year = a.getFullYear();
+  var month = months[a.getMonth()];
+  var date = a.getDate();
+  var hour = a.getHours();
+  var min = a.getMinutes();
+  var time = date + ' ' + month + ' ' + year + ', ' + hour + ':' + min  ;
+  return time;
 };
+ 
+
+
+
+

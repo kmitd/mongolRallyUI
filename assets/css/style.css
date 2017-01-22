@@ -26,8 +26,6 @@
 
 
 
-    
-
 .navbar-static-side ul li {
     border-bottom:1px solid #84B899 !important;
 }
@@ -282,4 +280,20 @@
 .show-grid {
     margin: 15px 0;
 }
+
+
+/*.example3 .navbar-brand {
+  height: 180px;
+}
+*/
+
+/*.example3 .nav >li >a {
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+.example3 .navbar-toggle {
+  padding: 10px;
+  margin: 25px 15px 25px 0;
+}*/
+
 

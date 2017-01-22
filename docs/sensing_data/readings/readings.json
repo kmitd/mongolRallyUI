@@ -1,0 +1,272 @@
+[
+{	
+	"timestamp": 1483023497981,
+	"id" : "1",
+	"name": "pitstop",
+	"fillKey": "PITSTOP",
+	"air_quality": {
+		"index": 3, 
+		"pm10": 38, 
+		"pm2.5": 28, 
+		"so2": 196, 
+		"o3": 100, 
+		"no2": 196
+	},
+	"fitbeat1": {
+		"beats_per_minute": 137
+	},
+	"fitbeat2": {
+		"beats_per_minute": 112
+	},
+	"humidity": 47.5,
+	"temperature": 6.1,
+	"latitude": 34.087566, 
+	"longitude": -75.470508,
+	"radius":3,
+	"imu": {
+		"angular_velocity": {
+			"y": 1.4, 
+			"x": 1.1, 
+			"z": 0.3
+		}, 
+		"linear_acceleration": {
+			"y": 9.41, 
+			"x": 3.62, 
+			"z": 10.42
+		}
+	},
+	"img": "docs/sensing_data/picts/TeamGoldenPandaMogolia.jpg"
+}, 
+{	"timestamp": 1483123497981,
+	"id" : "2",
+	"name": "pitstop",
+	"fillKey": "PITSTOP",
+	"air_quality": {
+		"index": 3, 
+		"pm10": 38, 
+		"pm2.5": 28, 
+		"so2": 196, 
+		"o3": 100, 
+		"no2": 196
+	},
+	"fitbeat1": {
+		"beats_per_minute": 50
+	},
+	"fitbeat2": {
+		"beats_per_minute": 200
+	},
+	"humidity": 47.5,
+	"temperature": 6.1,
+	"latitude": 35.087566, 
+	"longitude": -76.470508,
+	"radius" : 3,
+	"imu": {
+		"angular_velocity": {
+			"y": 1.4, 
+			"x": 1.1, 
+			"z": 0.3
+		}, 
+		"linear_acceleration": {
+			"y": 9.41, 
+			"x": 3.62, 
+			"z": 10.42
+		}
+	},
+	"img": "docs/sensing_data/picts/TeamGoldenPandaMogolia.jpg"
+} , 
+{ 	
+	"timestamp": 1483223497981,
+	"id" : "3",
+	"name": "pitstop",
+	"fillKey": "PITSTOP",
+	"air_quality": {
+		"index": 3, 
+		"pm10": 38, 
+		"pm2.5": 28, 
+		"so2": 196, 
+		"o3": 100, 
+		"no2": 196
+	},
+	"fitbeat1": {
+		"beats_per_minute": 107
+	},
+	"fitbeat2": {
+		"beats_per_minute": 212
+	},
+	"humidity": 47.5,
+	"temperature": 6.1,
+	
+	"latitude": 52.0406, 
+	"longitude": 0.7594,
+	"radius" :3,
+	"imu": {
+		"angular_velocity": {
+			"y": 1.4, 
+			"x": 1.1, 
+			"z": 0.3
+		}, 
+		"linear_acceleration": {
+			"y": 9.41, 
+			"x": 3.62, 
+			"z": 10.42
+		}
+	},
+	"img": "docs/sensing_data/picts/TeamGoldenPandaMogolia.jpg"
+}, 
+{	"timestamp": 1483323497981,
+	"id" : "4",
+	"name": "pitstop",
+	"fillKey": "PITSTOP",
+	"air_quality": {
+		"index": 3, 
+		"pm10": 38, 
+		"pm2.5": 28, 
+		"so2": 196, 
+		"o3": 100, 
+		"no2": 196
+	},
+	"fitbeat1": {
+		"beats_per_minute": 117
+	},
+	"fitbeat2": {
+		"beats_per_minute": 152
+	},
+	"humidity": 47.5,
+	"temperature": 6.1,
+	"latitude": 48.8566, 
+	"longitude": 2.3522,
+	"radius" :3,
+	
+	"imu": {
+		"angular_velocity": {
+			"y": 1.4, 
+			"x": 1.1, 
+			"z": 0.3
+		}, 
+		"linear_acceleration": {
+			"y": 9.41, 
+			"x": 3.62, 
+			"z": 10.42
+		}
+	},
+	"img": "docs/sensing_data/picts/TeamGoldenPandaMogolia.jpg"
+}, 
+{	
+	"timestamp": 1483423497981,
+	"id" : "5",
+	"name": "pitstop",
+	"fillKey": "PITSTOP",
+	"air_quality": {
+		"index": 3, 
+		"pm10": 38, 
+		"pm2.5": 28, 
+		"so2": 196, 
+		"o3": 100, 
+		"no2": 196
+	},
+	"fitbeat1": {
+		"beats_per_minute": 197
+	},
+	"fitbeat2": {
+		"beats_per_minute": 120
+	},
+	"humidity": 47.5,
+	"temperature": 6.1,
+	
+	"latitude": 47.3769, "longitude": 8.5417,
+	
+	"radius" :3,
+	"imu": {
+		"angular_velocity": {
+			"y": 1.4, 
+			"x": 1.1, 
+			"z": 0.3
+		}, 
+		"linear_acceleration": {
+			"y": 9.41, 
+			"x": 3.62, 
+			"z": 10.42
+		}
+	},
+	"img": "docs/sensing_data/picts/TeamGoldenPandaMogolia.jpg"
+}, 
+{ 	
+	"timestamp": 1483523497981,
+	"id" : "6",
+	"name": "pitstop",
+	"fillKey": "PITSTOP",
+	"air_quality": {
+		"index": 3, 
+		"pm10": 38, 
+		"pm2.5": 28, 
+		"so2": 196, 
+		"o3": 100, 
+		"no2": 196
+	},
+	"fitbeat1": {
+		"beats_per_minute": 140
+	},
+	"fitbeat2": {
+		"beats_per_minute": 180
+	},
+	"humidity": 47.5,
+	"temperature": 6.1,
+
+	"latitude": 48.2082, "longitude": 16.3738,
+
+	"radius" :3,
+	
+	"imu": {
+		"angular_velocity": {
+			"y": 1.4, 
+			"x": 1.1, 
+			"z": 0.3
+		}, 
+		"linear_acceleration": {
+			"y": 9.41, 
+			"x": 3.62, 
+			"z": 10.42
+		}
+	},
+	"img": "docs/sensing_data/picts/TeamGoldenPandaMogolia.jpg"
+}, 
+{ 	
+	"timestamp": 1483623497981,
+	"id" : "7",
+	"name": "pitstop",
+	"fillKey": "PITSTOP",
+	"air_quality": {
+		"index": 3, 
+		"pm10": 38, 
+		"pm2.5": 28, 
+		"so2": 196, 
+		"o3": 100, 
+		"no2": 196
+	},
+	"fitbeat1": {
+		"beats_per_minute": 170
+	},
+	"fitbeat2": {
+		"beats_per_minute": 103
+	},
+	"humidity": 47.5,
+	"temperature": 6.1,
+	
+	"latitude": 44.4268, 
+	"longitude": 26.1025,
+
+	"radius" :3,
+	"imu": {
+		"angular_velocity": {
+			"y": 1.4, 
+			"x": 1.1, 
+			"z": 0.3
+		}, 
+		"linear_acceleration": {
+			"y": 9.41, 
+			"x": 3.62, 
+			"z": 10.42
+		}
+	},
+	"img": "docs/sensing_data/picts/TeamGoldenPandaMogolia.jpg"
+	}]

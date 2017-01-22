@@ -1,229 +1,232 @@
 <!DOCTYPE html>
-<html ng-app="dashboardApp">
-<head>
+<html ng-app="dashboardApp" lang="en">
+  <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MK2MG - Milton Keynes to Mongolia</title>
-    <!-- Core CSS - Include with every page -->
-    <!-- <link href="assets/plugins/bootstrap/bootstrap.css" rel="stylesheet" /> -->
-    
-	<link href="assets/css/style.css" rel="stylesheet" />
-    <link href="assets/css/main-style.css" rel="stylesheet" />
-    <link href="assets/css/timeline.css" rel="stylesheet" />
-	
-	<!-- <link href="assets/css/bootstrap-theme.min.css" rel="stylesheet" /> -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+
+    <!-- Bootstrap core CSS -->
 	<link href="assets/css/bootstrap.min.css" rel="stylesheet" />
+
+    <!-- Custom styles for this template -->
     <link href="assets/css/font-awesome.min.css" rel="stylesheet" />
+	<link href="assets/css/timeline.css" rel="stylesheet" />
+    <link href="assets/css/dashboard.css" rel="stylesheet">
 	
-	
-    <!-- Page-Level CSS -->
-    <!-- <link href="assets/plugins/morris/morris-0.4.3.min.css" rel="stylesheet" /> -->
-   </head>
-<body>
-    <!--  wrapper -->
-    <div id="wrapper">
-        <!-- navbar top -->
-        <nav class="navbar navbar-default" role="navigation" id="navbar">   
-           <div class="navbar-header">
-				<h1 class="page-header">Milton Keynes goes to Mongolia - Dashboard</h1>
-           </div>
-            <ul class="nav navbar-right">
-               <li>
-              	 <img id="logoUp"  class="img-rounded pull-righ" src="assets/img/MK_logo.png">
-                </li>
-            </ul>
+	<!-- <link href="assets/css/style.css" rel="stylesheet" />
+    <link href="assets/css/main-style.css" rel="stylesheet" />
+	 -->
+  </head>
+
+  <body ng-controller="MainController">
+    <nav class="navbar navbar-toggleable-md navbar-inverse fixed-top bg-inverse">
+      <button class="navbar-toggler navbar-toggler-right hidden-lg-up" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <a class="navbar-brand" href="#">Milton Keynes to Mongolia</a>
+
+      <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+        <ul class="navbar-nav mr-auto">
+			
+            <li class="nav-item active">
+              <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="http://miltonkeynestomongolia.com">About</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="mailto:ilaria.tiddi@open.ac.uk">Contacts</a>
+            </li>
+			
+        </ul>
+        <form class="form-inline mt-2 mt-md-0">
+          <input class="form-control mr-sm-2" type="text" placeholder="Search">
+          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
+      </div>
+    </nav>
+
+    <div class="container-fluid">
+      <div class="row">
+        <nav class="col-sm-3 col-md-2 hidden-xs-down bg-faded sidebar">
+          <ul class="nav nav-pills flex-column">
+            <li class="nav-item">
+              <a class="nav-link active" href="#">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Where are we</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Analytics</a>
+            </li>
+
+		      <li class="nav-item">
+		        <a class="nav-link" href="#">Social</a>
+		      </li>
+              <li class="nav-item disabled">
+                   <div class="nav-link text-center" >
+   	   			 <img class="img img-round " width="60%" src="assets/img/MK_logo.png"  alt="MKpandas46-logo">
+                   </div>
+              </li>
+          </ul>
+
         </nav>
-        <!-- end navbar top -->
-		   
-		<div class="row">
-			<div ng-controller="MapController" class="col-lg-12 col-sm-12">
-		          	<ui-gmap-google-map center='map.center'  zoom='map.zoom' options="{scrollwheel: false, draggable: false}" events="map.events">
-		 				<ui-gmap-marker ng-repeat="point in waypoints" options="point.options"coords="point" idKey="1"> </ui-gmap-marker>
-						<ui-gmap-polyline path='waypoints'  stroke='stroke' geodesic = 'true' visible='true' ></ui-gmap-polyline>
-	 				</ui-gmap-google-map>
-			</div>
-		</div>
-            
-	
-		<div ng-controller="StoryTellingCtrl" class="row">
-				<!-- <div class="col-lg-8 col-sm-10">
-					<div id="storyTeller" class="panel panel-primary">
-	                    <div class="panel-heading">
-	                        Storyteller
-	                    </div>
-	                    <div class="panel-body">
-							 	<p>Today we did {{story.activities}}. We travelled {{story.kilom}} kilometers. We now are in {{story.where}}</p>
-								<p><span class="fa fa-car fa-2x" aria-hidden="true"></span> <strong> Where are we: </strong>FIFIFI</p>
-								<p><span class="fa fa-tachometer fa-2x" aria-hidden="true"></span> <strong> KM done: </strong>FIFIFI</p>
-								<p><span class="fa fa-camera-retro fa-2x" aria-hidden="true"></span> <strong> Picture: </strong>FIFIFI</p>
-								<p><span class="fa fa-bed fa-2x" aria-hidden="true"></span><strong> Where did we sleep: </strong> FIFIFI</p>
-								<p><span class="fa fa-tripadvisor fa-2x" aria-hidden="true"></span><strong> Where did we eat: </strong> FIFIFI</p>
-								<p><span class="fa fa-heart fa-2x" aria-hidden="true"></span><strong> Highlighted moment: </strong> FIFIFI</p>
-								<p><span class="fa fa-fire-extinguisher fa-2x" aria-hidden="true"></span><strong> Biggest drama: </strong> FIFIFI</p>
 
-						</div>
-					</div>
-				</div> -->
-				
+        <main class="col-sm-9 offset-sm-3 col-md-10 offset-md-2 pt-3" >
+          <h1>Dashboard</h1>
+		  
+ 
 		
-	            <div class="col-lg-8 col-sm-10" ng-controller="TimelineCtrl">
-					<div class="panel panel-primary">
-	                    <div class="panel-heading"><i class="fa fa-clock-o fa-fw"></i>Timeline</div>
-	                    <div class="panel-body" id="timelinePanel">
-	                        <ul class="timeline timeline-horizontal">
-	                            
-								<li  ng-repeat="event in events" class="timeline-item">
-									<div ng-mouseover="hoverEdit=true" ng-mouseleave="hoverEdit=false" class="timeline-badge {{event.badge}}"><i class=" {{event.type}}"></i></div>
-									<div ng-show="hoverEdit" class="timeline-panel">
-										<div class="timeline-heading">
-											 <h4 class="timeline-title">{{event.title}}</h4>
-	                                         <p>
-	                                            <small class="text-muted"><i class="fa fa-time"></i>{{event.when}} via {{event.from}}</small>
-	                                         </p>
-										</div>
-										<div class="timeline-body">
-											 <div class="table-responsive">
-											 	<table class="table">
-												<tbody>
-											 		<tr><td><span class="fa fa-car " aria-hidden="true"></span></td><td><strong> Where are we: </strong></td><td>{{event.where}}</td></tr>
-													 <tr><td><span class="fa fa-tachometer" aria-hidden="true"></span></td><td> <strong> KM done: </strong></td><td>{{event.km}}</td></tr>
-			 								<tr><td><span class="fa fa-camera-retro" aria-hidden="true"></span></td><td> <strong> Picture: </strong></td><td>{{event.url}}</td></tr>
-			 								<tr><td><span class="fa fa-bed" aria-hidden="true"></span></td><td><strong> Where did we sleep: </strong> </td><td>{{event.sleep}}</td></tr>
-			 								<tr><td><span class="fa fa-tripadvisor" aria-hidden="true"></span></td><td><strong> Where did we eat: </strong> </td><td>{{event.food}}</td></tr>
-			 								
-											 	</tbody>
-												</table>
-											 </div>
-											 
-										</div>
-									</div>
-								</li>
-								
-								<!-- <li ng-repeat="event in events" class="{{event.class}}">
-	                            	<div class="timeline-badge {{event.badge}}" ng-mouseover="hoverEdit=true" ng-mouseleave="hoverEdit=false"> <i class="{{event.type}}"></i> </div>
-									<div ng-show="hoverEdit" class="timeline-panel">
-										 <div class="timeline-heading">
-											 <h4 class="timeline-title">{{event.title}}</h4>
-	                                         <p>
-	                                            <small class="text-muted"><i class="fa fa-time"></i>{{event.when}} via {{event.from}}</small>
-	                                         </p>
-										 </div>
-	                                     <div class="timeline-body">
-											 <div class="table-responsive">
-											 	<table class="table">
-												<tbody>
-											 		<tr><td><span class="fa fa-car " aria-hidden="true"></span></td><td><strong> Where are we: </strong></td><td>{{event.where}}</td></tr>
-													 <tr><td><span class="fa fa-tachometer" aria-hidden="true"></span></td><td> <strong> KM done: </strong></td><td>{{event.km}}</td></tr>
-			 								<tr><td><span class="fa fa-camera-retro" aria-hidden="true"></span></td><td> <strong> Picture: </strong></td><td>{{event.url}}</td></tr>
-			 								<tr><td><span class="fa fa-bed" aria-hidden="true"></span></td><td><strong> Where did we sleep: </strong> </td><td>{{event.sleep}}</td></tr>
-			 								<tr><td><span class="fa fa-tripadvisor" aria-hidden="true"></span></td><td><strong> Where did we eat: </strong> </td><td>{{event.food}}</td></tr>
-			 								<tr><td><span class="fa fa-heart" aria-hidden="true"></span></td><td><strong> Highlighted moment: </strong> </td><td>{{event.loved}}</td></tr>
-			 								<tr><td><span class="fa fa-fire-extinguisher" aria-hidden="true"></span></td><td><strong> Biggest drama: </strong> </td><td>{{event.drama}}</td></tr>
-											 	</tbody>
-												</table>
-											 </div>
+		<div class="row">
+			<div class="col-lg-12 col-sm-12">
+				<div id="map_container" style="position: relative;  width: 100%; height: 500px;"></div>
+			<br/>
+			</div>
 
+	            <div class="col-lg-12 col-sm-12" >
+	                    <h3><i class="fa fa-clock-o fa-fw"></i>Timeline</h3>
+	                    
+	                     <ul class="timeline timeline-horizontal">
+							<li ng-repeat="pit in loadedData"  class="timeline-item">
+									<div class="timeline-badge danger" >{{pit.timestamp}} </div>
+							</li>
 
-	                                     </div>
-									</div>
-	                            </li> -->
-	                        </ul>
+	                      </ul>
 	                    </div>
-	                </div>  <!--End panel Timeline -->
-	           	</div>  <!--End col-8 -->
-				
-				<div class ="col-lg-4 col-sm-2">
-                       <div class="panel panel-primary">
-                           <div class="panel-heading">                               
-                               Twitter Feeds                          
-                           </div>
-
-                           <div class="panel-body">
-							 <a class="twitter-timeline" data-width="400" data-height="350" data-dnt="true" href="https://twitter.com/IlaTiddi"></a> 
-                           </div>
-						   <div class="panel-footer">
-                               Follow us! <a href="https://www.facebook.com/mk2mg/"><span class="fa pull-right fa-facebook fa-lg"> </span> </a>
-							   <a href="https://www.twitter.com/IlaTiddi"> <span class="fa fa-twitter fa-lg pull-right"></span></a>
-							   <a href="http://miltonkeynestomongolia.com">http://miltonkeynestomongolia.com</a>
-                           </div>
-
-                       </div> <!--End Chat Panel Example-->
 	               </div>
-		</div> <!-- end row storytelling -->
-			
-        <div  class="row">
-    		<div class="col-lg-4  col-sm-4" ng-controller="LineController">
-				<div class="panel panel-success">
-				        <div class="panel-heading">Line Chart</div>
-				        <div class="panel-body">
-				              <canvas id="canvas-line" class="chart chart-line ng-isolate-scope" chart-data="data" chart-labels="labels" chart-click="onClick" chart-hover="onHover" chart-series="series" chart-options="options" chart-dataset-override="datasetOverride" ></canvas>
-				   	   	</div>
-				</div>
-			 </div> <!-- end col-4 -->
-			 
-			<div class="col-lg-4 col-sm-4" id="doughnut-chart" ng-controller="DonutCtrl">
-		          <div class="panel panel-warning">
-		            <div class="panel-heading">Doughnut Chart</div>
-		            <div class="panel-body">
-		              <canvas id="doughnut" class="chart chart-doughnut chart-xs ng-isolate-scope" chart-data="data" chart-labels="labels" ></canvas>
-		            </div>
-			    </div>
-			</div> <!-- end col-4 -->
+
+	           	</div>
+		</div> 
+
+
+          <section class="row text-center placeholders">
+              <div class="col-6 col-sm-4 placeholder" id="bubble-chart" >
+
+              <h4>Bubble Chart</h4>
+              <span class="text-muted">Bubble Chart</span>
+			   <canvas id="bubble" class="chart chart-bubble ng-isolate-scope" chart-data="bubble.data" chart-options="bubble.options"></canvas>
+
+
+
+            </div>
+            <div class="col-6 col-sm-4 placeholder" id="doughnut-chart" >
+
+              <h4>Avg Speed per Country Chart</h4>
+              <span class="text-muted">Bar Chart</span>
+
+			  <canvas id="bar" class="chart chart-bar chart-xs ng-isolate-scope" chart-data="donut.data" chart-labels="donut.labels" chart-hover="donut.hover"></canvas>
+            </div> 
+            <div class="col-12 col-sm-4 placeholder"  >
+              
+              <h4>Fitbeat chart</h4>
+			  
+              <span class="text-muted">Line Chart</span>
+			  <canvas id="canvas-line" class="chart chart-line ng-isolate-scope" chart-data="data" chart-labels="labels" chart-click="onClick"  chart-series="series" chart-options="options" chart-dataset-override="datasetOverride" ></canvas>
+            </div>
+           
+          </section>
+		  
+		  <hr/>
+		  
+		  <section class="row text-center placeholders">
+			  
+			  <div class="col-6 col-sm-6 placeholder">
+			  	
+				<div id="fb-root"></div>
+				<h4>Facebook Feeds <a href="https://www.facebook.com/mk2mg/"><span class="fa pull-right fa-facebook fa-lg"> </span> </a></h4>
+
+				<div class="fb-page" data-href="https://www.facebook.com/mk2mg/" data-tabs="timeline" data-height="400" data-small-header="true" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="false"><blockquote cite="https://www.facebook.com/mk2mg/" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/mk2mg/">MKpandas46 for the Mongol Rally 2017</a></blockquote></div>
 				
 				
-			<div class="col-lg-4 col-sm-4" id="bubble-chart" ng-controller="BubbleCtrl">
-		          <div class="panel panel-danger">
-		            <div class="panel-heading">Bubble Chart</div>
-		            <div class="panel-body">
-		              <canvas id="bubble" class="chart chart-bubble ng-isolate-scope" chart-data="data" chart-options="options"></canvas>
-		            </div>
-		          </div>
-	        </div> <!-- end col-4 -->
-			
-        </div> <!-- end row -->
-			
-		 	
-	 
+			  </div>
+			  
+			  <div class="col-6 col-sm-6 placeholder">
+			  	<h4>Twitter Feeds  <a href="https://www.twitter.com/mk2mg"> <span class="fa fa-twitter fa-lg pull-right"></span></a></h4>
+				
+				<a class="twitter-timeline" data-height="400" data-dnt="true" href="https://twitter.com/mk2mg"></a> <!-- data-width="400"  -->
+                
+			  </div>
+			  
+		  </section>
+	
+
+		  
+      
+	
+
+		
+          <h2>Section title</h2>
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Header</th>
+                  <th>Header</th>
+                  <th>Header</th>
+                  <th>Header</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1,001</td>
+                  <td>Lorem</td>
+                  <td>ipsum</td>
+                  <td>dolor</td>
+                  <td>sit</td>
+                </tr>
+                <tr>
+                  <td>1,002</td>
+                  <td>amet</td>
+                  <td>consectetur</td>
+                  <td>adipiscing</td>
+                  <td>elit</td>
+                </tr>
+                <tr>
+                  <td>1,003</td>
+                  <td>Integer</td>
+                  <td>nec</td>
+                  <td>odio</td>
+                  <td>Praesent</td>
+                </tr>
+               
+              </tbody>
+            </table>
+          </div>
+        </main>
+      </div>
     </div>
-    <!-- end wrapper -->
 
     <!-- Core Scripts - Include with every page -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <!-- // <script src="js/bootstrap.min.js"></script> -->
 	
 	<script src="./js/angular.min.js"></script>   
     <script src="assets/scripts/angular-simple-logger.js"></script>
     <script src="assets/scripts/lodash.js"></script>
-	<!-- // <script src='//maps.googleapis.com/maps/api/js?sensor=false'></script> -->
    
     <script src="assets/scripts/angular-google-maps.min.js"></script>
 	
-		
-    <!-- // <script src="assets/plugins/metisMenu/jquery.metisMenu.js"></script> -->
-    <!-- // <script src="assets/scripts/siminta.js"></script> -->
-    <!-- Page-Level Plugin Scripts-->
-    <!-- // <script src="assets/plugins/morris/raphael-2.1.0.min.js"></script> -->
-    <!-- // <script src="assets/plugins/morris/morris.js"></script> -->
-    <!-- // <script src="assets/scripts/dashboard-demo.js"></script> -->
-	
  	<script src="assets/scripts/dashboard.js"></script>
-	
-   	<!-- // <script src="./js/ui-bootstrap-2.0.1.min.js"></script> -->	
- 	<!-- // <script type="text/javascript" src="./js/inspector-gadget.min.js"></script> -->
- 	<!-- // <script src="./js/moment.min.js"></script> -->
+	<script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.5.3/d3.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/topojson/1.6.9/topojson.min.js"></script>
+	<!-- // <script src="./js/datamaps.world.min.js"></script> -->
+	<script src="./datamaps.world.js"></script>
  	<script src="./js/Chart.min.js"></script>  
  	<script src="./js/angular-chart.min.js"></script>
 	<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
-</body>
-
+	<script>(function(d, s, id) {
+	  var js, fjs = d.getElementsByTagName(s)[0];
+	  if (d.getElementById(id)) return;
+	  js = d.createElement(s); js.id = id;
+	  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.8";
+	  fjs.parentNode.insertBefore(js, fjs);
+	}(document, 'script', 'facebook-jssdk'));</script>
+  </body>
 </html>
 
 
 
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    
-	
-	
-	
-	
+

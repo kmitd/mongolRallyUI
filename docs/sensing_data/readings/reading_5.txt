@@ -1,0 +1,35 @@
+{
+	"air_quality": {
+		"index": 3, 
+		"pm10": 38, 
+		"pm2.5": 28, 
+		"so2": 196, 
+		"o3": 100, 
+		"no2": 196
+	},
+	"fitbeat1": {
+		"beats_per_minute": 137
+	},
+	"fitbeat2": {
+		"beats_per_minute": 112
+	},
+	"humidity": 47.5,
+	"temperature": 6.1,
+	"gps": {
+		"lat": 38.087566, 
+		"lon": -77.470508
+	},
+	"imu": {
+		"angular_velocity": {
+			"y": 1.4, 
+			"x": 1.1, 
+			"z": 0.3
+		}, 
+		"linear_acceleration": {
+			"y": 9.41, 
+			"x": 3.62, 
+			"z": 10.42
+		}
+	},
+	"img": "MR16,+otr,+Team+Golden+Panda,+Mogolia+rds.jpg?format=300w"
+}
