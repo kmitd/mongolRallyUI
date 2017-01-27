@@ -277,10 +277,11 @@ $scope.labels = ["17/07/17", "18/07/17", "19/07/17", "20/07/17", "21/07/17", "22
 	/**
 	DONUT
 	**/
-	$scope.donut = {} ;
+	$scope.bar = {} ;
+	$scope.temp = {} ;
 	
 
-	$scope.donut.labels = ["GB","FR","HU", "BG","TR"];
+	$scope.bar.labels = ["GB","FR","HU", "BG","TR"];
 	
 	// var newNumbers = Object.keys($scope.mongolRallyCountries).filter(function(itm){
 	//     return (item);
@@ -291,8 +292,8 @@ $scope.labels = ["17/07/17", "18/07/17", "19/07/17", "20/07/17", "21/07/17", "22
 	// console.log(newNumbers);
 	
 //["Sunny", "Rainy", "Cloudy"];
-	$scope.donut.data = [112, 130, 130,110,80];
-	$scope.donut.data2 = [12, 25, 23,21,18]
+	$scope.bar.data = [112, 130, 130,110,80];
+	$scope.temp.data2 = [12, 25, 23,21,18]
 	/**
 	Bubble
 	**/  
