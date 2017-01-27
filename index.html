@@ -16,9 +16,9 @@
 	<link href="assets/css/timeline.css" rel="stylesheet" />
     <link href="assets/css/dashboard.css" rel="stylesheet">
 	
-	<!-- <link href="assets/css/style.css" rel="stylesheet" />
-    <link href="assets/css/main-style.css" rel="stylesheet" />
-	 -->
+	<link href="assets/css/style.css" rel="stylesheet" />
+    <link href="assets/css/main-style.css" rel="stylesheet" /> 
+	
   </head>
 
   <body ng-controller="MainController">
@@ -80,60 +80,153 @@
 		  
  
 		
-		<div class="row">
+		<section class="row">
 			<div class="col-lg-12 col-sm-12">
+				<h3><i class="fa fa-clock-o fa-fw"></i>Timeline</h3>
 				<div id="map_container" style="position: relative;  width: 100%; height: 500px;"></div>
-			<br/>
+				<br/>
 			</div>
 
-	            <div class="col-lg-12 col-sm-12" >
+	           	 	<!-- <div class="col-lg-12 col-sm-12" >
 	                    <h3><i class="fa fa-clock-o fa-fw"></i>Timeline</h3>
-	                    
+
 	                     <ul class="timeline timeline-horizontal">
 							<li ng-repeat="pit in loadedData"  class="timeline-item">
-									<div class="timeline-badge danger" >{{pit.timestamp}} </div>
+									<div class="timeline-badge danger" ng-mouseover="mouseover(pit)">{{pit.timestamp}} </div>
 							</li>
 
 	                      </ul>
-	                    </div>
-	               </div>
-
-	           	</div>
-		</div> 
-
-
-          <section class="row text-center placeholders">
-              <div class="col-6 col-sm-4 placeholder" id="bubble-chart" >
-
-              <h4>Bubble Chart</h4>
-              <span class="text-muted">Bubble Chart</span>
-			   <canvas id="bubble" class="chart chart-bubble ng-isolate-scope" chart-data="bubble.data" chart-options="bubble.options"></canvas>
-
-
-
+	                    </div> -->
+		</section>
+		
+		<section >
+			<br/><br>
+		<h1 class="text-center"><i class="fa fa-bar-chart" ></i> Analytics</h1>
+			
+		</section> 
+		
+		<section class="row">
+		      
+			  <div class="col-md-4 col-sm-4" id="bubble-chart" >
+	  			<div class="panel panel-success">
+	  				<div class="panel-heading">Jolt Variation</div>
+	  				<div class="panel-body">
+				              	<span class="text-muted">Bumps on the road</span>
+  				  			  <br/><br/>
+								
+							   	<!-- <canvas id="bubble" class="chart chart-bubble ng-isolate-scope" chart-data="bubble.data" chart-options="bubble.options"></canvas> -->
+							<canvas id="line" class="chart chart-line" chart-data="data"
+							chart-labels="labels"  chart-options="options"
+							chart-dataset-override="datasetOverride" chart-click="onClick">
+							</canvas>
+					</div>
+				</div>
+			</div>
+			
+            <div class="col-md-4 col-sm-4 " id="doughnut-chart" >
+	  			<div class="panel panel-success">
+	  				<div class="panel-heading">Avg Speed per Country</div>
+	  				<div class="panel-body">
+				              <span class="text-muted text-centered">Km/h</span>
+				  			  <br/><br/>
+							  
+				               <canvas id="bar" class="chart chart-bar chart-xs ng-isolate-scope" chart-data="donut.data" chart-labels="donut.labels" chart-hover="donut.hover"></canvas>
+							   
+					</div>
+				</div>
             </div>
-            <div class="col-6 col-sm-4 placeholder" id="doughnut-chart" >
+			
+            <div class="col-md-4 col-sm-4 " id="doughnut-chart" >
+	  			<div class="panel panel-success">
+	  				<div class="panel-heading">Avg Temperature per Country</div>
+	  				<div class="panel-body">
+				                <span class="text-muted">ºC</span>
+				  			  <br/><br/>
+				  			  <canvas id="bar" class="chart chart-bar chart-xs ng-isolate-scope" chart-data="donut.data2" chart-labels="donut.labels" chart-hover="donut.hover"></canvas>
+					</div>
+				</div>
+            </div>
+			
+			
 
-              <h4>Avg Speed per Country Chart</h4>
-              <span class="text-muted">Bar Chart</span>
-
-			  <canvas id="bar" class="chart chart-bar chart-xs ng-isolate-scope" chart-data="donut.data" chart-labels="donut.labels" chart-hover="donut.hover"></canvas>
+            <div class="col-md-6 offset-md-3 col-sm-6 offset-sm-3"  >
+	  			<div class="panel panel-primary">
+	  				<div class="panel-heading">Heartbeat</div>
+	  				<div class="panel-body">
+						
+						<div class="">
+							   <canvas class="chart chart-line" chart-data="line.data" chart-labels="line.labels" chart-series="line.series" ></canvas>
+						</div>
+						<br/><br/>
+						<div class="">
+							   			  <h2 ><i class="fa fa-heartbeat fa-2x" ></i> <i class="fa fa-male fa-2x" ></i>
+							   103 bpm <i class="fa fa-heartbeat fa-2x" ></i><i class="fa fa-female fa-2x" ></i>
+							   153 bpm</h2>
+						</div>
+					</div>
+				</div>
+				
             </div> 
-            <div class="col-12 col-sm-4 placeholder"  >
-              
-              <h4>Fitbeat chart</h4>
-			  
-              <span class="text-muted">Line Chart</span>
-			  <canvas id="canvas-line" class="chart chart-line ng-isolate-scope" chart-data="data" chart-labels="labels" chart-click="onClick"  chart-series="series" chart-options="options" chart-dataset-override="datasetOverride" ></canvas>
+			
+			
+            <div class="col-md-12  col-sm-12 "  >
+	  			<div class="panel panel-warning">
+	  				<div class="panel-heading">Weather info</div>
+	  				<div class="panel-body">
+						
+			         
+					  
+				          <div class="table-responsive offset-2 col-md-8  col-sm-8 ">
+				            <table class="table text-center">
+				              <thead>
+				              	<tr class="active" >
+				              		<th class="text-center">Current temperature</th>
+									<th class=" text-center">Current humidity</th>
+									<th class=" text-center">Current weather</th>
+				              	</tr>
+				              </thead>
+				              <tbody>
+				                <tr> <td> <h2><i class="fa fa-thermometer-empty fa-1x" ></i>32 ºC</h2></td>
+				               
+									 <td> <h2><i class="fa fa-tint" aria-hidden="true"></i> 88 %</h2></td>
+									  <td> <h2><i class="fa fa-sun-o" aria-hidden="true"></i> Sunny</h2></td>
+				                </tr>
+               
+				              </tbody>
+				            </table>
+				          </div>
+						  
+						  <br/>
+   			           <div class="row">
+   						   <div class=" col-md-4 col-sm-4 offset-md-2 offset-sm-2 ">
+							   <p class="text-center">Rainy/Sunny/Cloudy days</p>
+   						  	 <canvas class="chart chart-doughnut"  chart-data="donut.data" chart-labels="donut.labels">
+   						  	</canvas>
+   					 	 	</div> 
+     				          <div class="col-md-4 col-sm-4">
+   							   <p class="text-center">Foggy/Windy/Dry days</p>
+								  
+     							  <canvas class="chart chart-doughnut" chart-data="donut2.data" chart-labels="donut2.labels">
+     							  </canvas>
+     						  </div>
+   						</div>
+						
+					</div>
+				</div>
+				
             </div>
-           
-          </section>
-		  
-		  <hr/>
-		  
-		  <section class="row text-center placeholders">
-			  
-			  <div class="col-6 col-sm-6 placeholder">
+			
+               
+              
+          
+            </section>
+		  <br/>
+		  <h1 class="text-center"><i class="fa fa-twitter" ></i> <i class="fa fa-facebook" ></i> We are also social
+		  <i class="fa fa-instagram fa-right" ></i> <i class="fa fa-pinterest fa-right" ></i> 
+	  </h1>
+		  <section class="row ">
+			 
+			  <div class="col-md-4 col-sm-5 offset-sm-3 offset-md-2 placeholder">
 			  	
 				<div id="fb-root"></div>
 				<h4>Facebook Feeds <a href="https://www.facebook.com/mk2mg/"><span class="fa pull-right fa-facebook fa-lg"> </span> </a></h4>
@@ -143,7 +236,7 @@
 				
 			  </div>
 			  
-			  <div class="col-6 col-sm-6 placeholder">
+			  <div class="col-md-4 col-sm-4 ">
 			  	<h4>Twitter Feeds  <a href="https://www.twitter.com/mk2mg"> <span class="fa fa-twitter fa-lg pull-right"></span></a></h4>
 				
 				<a class="twitter-timeline" data-height="400" data-dnt="true" href="https://twitter.com/mk2mg"></a> <!-- data-width="400"  -->
@@ -155,47 +248,6 @@
 
 		  
       
-	
-
-		
-          <h2>Section title</h2>
-          <div class="table-responsive">
-            <table class="table table-striped">
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Header</th>
-                  <th>Header</th>
-                  <th>Header</th>
-                  <th>Header</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>1,001</td>
-                  <td>Lorem</td>
-                  <td>ipsum</td>
-                  <td>dolor</td>
-                  <td>sit</td>
-                </tr>
-                <tr>
-                  <td>1,002</td>
-                  <td>amet</td>
-                  <td>consectetur</td>
-                  <td>adipiscing</td>
-                  <td>elit</td>
-                </tr>
-                <tr>
-                  <td>1,003</td>
-                  <td>Integer</td>
-                  <td>nec</td>
-                  <td>odio</td>
-                  <td>Praesent</td>
-                </tr>
-               
-              </tbody>
-            </table>
-          </div>
         </main>
       </div>
     </div>

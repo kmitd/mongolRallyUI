@@ -20,7 +20,8 @@ function mainControllerFct($scope,uiGmapGoogleMapApi, $http){
 	INiT
 	**/
  
-
+	$scope.pathImages = './docs/sensing_data/picts';
+	
 	$scope.loadedData = null;
 	$scope.mapping = {
 		GB : "GBR", CH :"CHE" ,AU: "AUT", RO: "ROU", HU: "HUN",
@@ -28,9 +29,10 @@ function mainControllerFct($scope,uiGmapGoogleMapApi, $http){
 		MN : "MNG", UZ : "UZB", AM : "ARM", GE: "GEO", TR : "TUR", IR: "IRN"
 	}// any better way?
 
-	$scope.mongolRallyCountries = { GBR : {fillKey: "TOVISIT"},CHE : {fillKey: "TOVISIT"},AUT : {fillKey: "TOVISIT"},ROU : {fillKey: "TOVISIT"},HUN : {fillKey: "TOVISIT"}, FRA: {fillKey: "TOVISIT"}, BGR: {fillKey: "TOVISIT"}, DEU : {fillKey: "TOVISIT"},TKM: { fillKey: 'TOVISIT'},TJK : { fillKey: 'TOVISIT'},KGZ : { fillKey: 'TOVISIT'},KAZ : { fillKey: 'TOVISIT'}, MNG : { fillKey: 'TOVISIT'},UZB: {fillKey: 'TOVISIT'},ARM: {fillKey: 'TOVISIT'},GEO: {fillKey: 'TOVISIT'},TUR: {fillKey: 'TOVISIT'},IRN: {fillKey: 'TOVISIT'}
+	$scope.mongolRallyCountries = { GBR : {fillKey: "TOVISIT"},AUT : {fillKey: "VISITED"},ROU : {fillKey: "VISITED"},HUN : {fillKey: "TOVISIT"}, FRA: {fillKey: "TOVISIT"}, BGR: {fillKey: "TOVISIT"}, DEU : {fillKey: "VISITED"},TKM: { fillKey: 'TOVISIT'},TJK : { fillKey: 'TOVISIT'},KGZ : { fillKey: 'TOVISIT'},KAZ : { fillKey: 'TOVISIT'}, MNG : { fillKey: 'TOVISIT'},UZB: {fillKey: 'TOVISIT'},ARM: {fillKey: 'TOVISIT'},GEO: {fillKey: 'TOVISIT'},TUR: {fillKey: 'TOVISIT'},IRN: {fillKey: 'TOVISIT'}, BEL : {fillKey: 'VISITED'}
 };
-
+	
+	var map;
 	var getClosestPlace = function(event){
 		$http({
 		  method: 'GET',
@@ -53,18 +55,18 @@ function mainControllerFct($scope,uiGmapGoogleMapApi, $http){
 		  $scope.loadedData[i].latitude+'&lng='+$scope.loadedData[i].longitude
 		  //+'&key=AIzaSyDEJDKFSDl6ndtqnRykHyahKnoQG_KN_hQ&result_type=country'
 		}).then(function successCallback(response) {
-			// console.log(response.data);
+			 console.log(response.data);
 			$scope.mongolRallyCountries[$scope.mapping[response.data.trim()]] = { fillKey : "VISITED" };
-			
+			map.updateChoropleth($scope.mongolRallyCountries);
 		  }, function errorCallback(response,error) {
 			  console.log(error);
 		  });
 	}
 	
-	
+
 
 	var atStart = function() {
-		return $http.get('docs/sensing_data/readings/event.json')
+		return $http.get('docs/sensing_data/readings/events.json')
 		.success(function(data) {
 			$scope.loadedData = data;
 	 		if ($scope.loadedData.length > 1) {
@@ -90,60 +92,104 @@ function mainControllerFct($scope,uiGmapGoogleMapApi, $http){
 		**/
 		// TODO here
 		$scope.loadedData = result.data;
-		console.log(1,$scope.mongolRallyCountries,$scope.mongolRallyCountries.CHE);
-		for (var key in $scope.mongolRallyCountries) { 
-			if (key == "GBR") {
-				console.log(2,key,$scope.mongolRallyCountries[key]);				
-			}
-			
-		}
+		// console.log(1,$scope.mongolRallyCountries);
+// 		for (var key in $scope.mongolRallyCountries) {
+// 			if (key == "GBR") {
+// 				console.log(2,key,$scope.mongolRallyCountries[key]);
+// 			}
+//
+// 		}
 		
-		$scope.labels = $.map($scope.loadedData, function(value, index) {	    
-			return [timeConverter(value.timestamp)];
-		});
-		 	
-
-		$scope.series = ['fitbeat_I', 'fitbeat_M'];
-
-		f1 = $.map($scope.loadedData, function(value, index) {
-		    return [value["fitbeat1"]["beats_per_minute"]];
-		});
-
-		f2 = $.map($scope.loadedData, function(value, index) {
-		    return [value["fitbeat2"]["beats_per_minute"]];
-		});
-
-		$scope.data = [f1,  f2];
-
-		 $scope.onClick = function (points, evt) {
-		   console.log(points, evt);
-		 };
-
-		 $scope.datasetOverride = [{ yAxisID: 'y-axis-1' }, { yAxisID: 'y-axis-2' }];
-		 $scope.options = {
-		   scales: {
-		     yAxes: [
-		       {
-		         id: 'y-axis-1',
-		         type: 'linear',
-		         display: true,
-		         position: 'left'
-		       },
-		       {
-		         id: 'y-axis-2',
-		         type: 'linear',
-		         display: true,
-		         position: 'right'
-		       }
-		     ]
-		   }
-		 };
+		// $scope.labels = $.map($scope.loadedData, function(value, index) {
+// 			return [timeConverter(value.timestamp)];
+// 		});
+//
+//
+// 		$scope.series = ['fitbeat_I', 'fitbeat_M'];
+//
+// 		f1 = $.map($scope.loadedData, function(value, index) {
+// 		    return [value["fitbeat1"]["beats_per_minute"]] ;
+// 		});
+//
+// 		f2 = $.map($scope.loadedData, function(value, index) {
+// 		    return [value["fitbeat2"]["beats_per_minute"]];
+// 		});
+//
+// 		$scope.data = [f1,  f2];
+//
+// 		 $scope.onClick = function (points, evt) {
+// 		   console.log(points, evt);
+// 		 };
+//
+// 		 $scope.datasetOverride = [{ yAxisID: 'y-axis-1' }, { yAxisID: 'y-axis-2' }];
+// 		 $scope.options = {
+// 		   scales: {
+// 		     yAxes: [
+// 		       {
+// 		         id: 'y-axis-1',
+// 		         type: 'linear',
+// 		         display: true,
+// 		         position: 'left'
+// 		       },
+// 		       {
+// 		         id: 'y-axis-2',
+// 		         type: 'linear',
+// 		         display: true,
+// 		         position: 'right'
+// 		       }
+// 		     ]
+// 		   }
+// 		 };
+//
 		 
 		 
-		 
+$scope.labels = ["17/07/17", "18/07/17", "19/07/17", "20/07/17", "21/07/17", "22/07/17", "23/07/17","17/07/17", "18/07/17", "19/07/17", "20/07/17", "21/07/17", "22/07/17", "23/07/17","17/07/17", "18/07/17", "19/07/17", "20/07/17", "21/07/17", "22/07/17", "23/07/17","17/07/17", "18/07/17", "19/07/17", "20/07/17", "21/07/17", "22/07/17", "23/07/17","17/07/17", "18/07/17", "19/07/17", "20/07/17", "21/07/17", "22/07/17", "23/07/17","17/07/17", "18/07/17", "19/07/17", "20/07/17", "21/07/17", "22/07/17", "23/07/17"];
+ $scope.series = ['Series A'];
+ $scope.data = [
+
+   [28, 48, 40, 19, 86, 27, 90,28, 48, 40, 19, 86, 27, 90,28, 48, 40, 19, 86, 27, 90,28, 48, 40, 19, 86, 27, 90, 28, 48, 40, 19, 86, 27, 90,28, 48, 40, 19, 86, 27, 90,28, 48, 40, 19, 86, 27, 90,28, 48, 40, 19, 86, 27, 90]
+ ];
+  $scope.onClick = function (points, evt) {
+    console.log(points, evt);
+  };
+  $scope.datasetOverride = [{ yAxisID: 'y-axis-1' }, { yAxisID: 'y-axis-2' }];
+  $scope.options = {
+    scales: {
+	    xAxes: [{
+	                   display: false
+	               }],
+      yAxes: [
+        {
+          id: 'y-axis-1',
+          type: 'linear',
+          display: true,
+          position: 'left'
+        }
+      ]
+    }
+  };
+  	 
+  $scope.line = {};
+  $scope.line.labels = ["January", "February", "March", "April", "May", "June", "July"];
+   $scope.line.series = ['Series A', 'Series B'];
+   $scope.line.data = [
+     [65, 59, 80, 81, 56, 55, 40],
+     [28, 48, 40, 19, 86, 27, 90]
+   ];
+   
+   
+   $scope.donut = {};   
+   $scope.donut.labels = ["Sunny", "Rainy", "Cloudy"];
+     $scope.donut.data = [300, 500, 100];
+   
+   
+     $scope.donut2 = {};   
+     $scope.donut2.labels = ["Foggy", "Dry", "Windy"];
+       $scope.donut2.data = [40, 17, 20];
+	   
  	/**TIMELINE**/
    
- 	    var map = new Datamap({
+ 	     map = new Datamap({
  			element: document.getElementById('map_container'),
  			fills: {
  			            VISITED: '#008000',
@@ -180,7 +226,7 @@ function mainControllerFct($scope,uiGmapGoogleMapApi, $http){
 			 // console.log(result);
 			 
 			 return "<div class='hoverinfo' ng-bind=\"hoverEdit=true\" ><div class=\"text-center\"> Recorded on <b>" + timeConverter(data.timestamp)
-			 	+ "</b> next to "+result[0].closestplace+"</div><div><img class='img img-round' src="+data.img+"  alt='img'></div></div>";
+			 	+ "</b> next to "+result[0].closestplace+"</div><div class='text-center'><br/><h4>"+data.title+"</h4><img class='img img-round' height='200px' src='"+$scope.pathImages+"/"+data.img+"'  alt='img'><p>"+data.description+"</p></div></div>";
 				// testo, nome , luogo, timestamp
 		 },
 		 borderColor: '#000000',
@@ -208,7 +254,17 @@ function mainControllerFct($scope,uiGmapGoogleMapApi, $http){
 
 		map.arc(arcs, { strokeColor: 'rgba(100, 10, 200, 1)', strokeWidth: 2, arcSharpness: 0});
 		
+	
+		$scope.mouseover = function(data){
+			console.log("hello",data);
+		 return "<div class='hoverinfo' ng-bind=\"hoverEdit=true\" ><div class=\"text-center\"> Recorded on </div></div>";
+			
+		}
 		
+		setTimeout(function(){
+			map.updateChoropleth($scope.mongolRallyCountries);
+			
+		}, 1000); 
 		
 });
 		
@@ -222,9 +278,21 @@ function mainControllerFct($scope,uiGmapGoogleMapApi, $http){
 	DONUT
 	**/
 	$scope.donut = {} ;
-	$scope.donut.labels = ["MNG","TAJ", "KAZ"]//["Sunny", "Rainy", "Cloudy"];
-	$scope.donut.data = [100, 50, 20];
 	
+
+	$scope.donut.labels = ["GB","FR","HU", "BG","TR"];
+	
+	// var newNumbers = Object.keys($scope.mongolRallyCountries).filter(function(itm){
+	//     return (item);
+	// }).map(function(number){
+	//     return item+"!";
+	// });
+	//
+	// console.log(newNumbers);
+	
+//["Sunny", "Rainy", "Cloudy"];
+	$scope.donut.data = [112, 130, 130,110,80];
+	$scope.donut.data2 = [12, 25, 23,21,18]
 	/**
 	Bubble
 	**/  
@@ -252,11 +320,13 @@ function mainControllerFct($scope,uiGmapGoogleMapApi, $http){
 			  r: 10
 	      }]
 	    ];
+		
+		
 }
 
 
 function timeConverter(UNIX_timestamp){
-  var a = new Date(UNIX_timestamp * 1000);
+  var a = new Date(UNIX_timestamp );
   var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
   var year = a.getFullYear();
   var month = months[a.getMonth()];

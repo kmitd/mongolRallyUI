@@ -1,0 +1,8 @@
+[
+{"description":"Bye bye sweet home Milton Keynes", "img": "mk.jpg", "title":"So long, Mk!", "text":"We're finally leaving Milton Keynes to reach Ulan-ude, passing through Mongolia and many other countries. The adventure starts now.", "longitude": -0.7751966, "radius": 3, "timestamp": 1485113348823, "latitude": 52.0381633}
+,
+{"description":"Landed in the old Europe.", "img": "calais.jpg", "title":"Hello, old continent!", "text":"So far it has been definitely easy, and it will be like that until Bucharest, probably.", "longitude": 1.8339366, "radius": 3, "timestamp": 1485170948000, "latitude": 50.9519343},
+{"description":"We weren't expecting so much rain at this time of the year.", "img": "Szolnok.jpg", "title":"Oh, that's heavy rain!", "text":"Well, we knew about continental weather, but such a storm in Europe was really unexpected. Better now than later!", "longitude": 20.0435882, "radius": 3, "timestamp": 1485343748000, "latitude": 47.18055},
+{"description":"Who knew that roads could be so bumpy here?", "img": "Elena.jpg", "title":"Bumps!", "text":"We got a bad one. That bump was really unexpected. Let's hope the tyres are all ok! We'll have a check later.", "longitude": 25.8726133, "radius": 3, "timestamp": 1485534548000, "latitude": 42.9289776},
+{"description":"Guys, this bump was not ok AT ALL.", "img": "turkey.jpg", "title":"Omg! That BUMP!", "text":"We're still in Turkey and we got into a massive bump. If this is what we are finding here, we can't immagine what will come afterwards.", "longitude": 34.5109253, "radius": 3, "timestamp": 1485849723000, "latitude": 41.05688}
+]

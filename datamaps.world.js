@@ -12581,7 +12581,6 @@
           var geo = this.svg.select('.' + subunit).attr('data-info', JSON.stringify(this.options.data[subunit]));
         }
 		
-		console.log(color);
         svg
           .selectAll('.' + subunit.replace(".", "\\."))
           .transition()
