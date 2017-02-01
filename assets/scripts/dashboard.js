@@ -83,17 +83,17 @@ function mainControllerFct($scope,uiGmapGoogleMapApi, $http, $interval){
 
 	function reload() {
 		map.updateChoropleth($scope.mongolRallyCountries);
-		loadEvent.then(function(result){
-			// $scope.data.events = result.data;
-			loadAvg.then(function(result2){
-				// $scope.data.averages = result2.data;
-				loadIns.then(function(result3){
-					console.log("loaded again",result3);
-					console.log($scope.data.instant.temperature);
-					$scope.data.instant = result3.data;
-				});
-			});
-		});
+		// loadEvent.then(function(result){
+// 			// $scope.data.events = result.data;
+// 			loadAvg.then(function(result2){
+// 				// $scope.data.averages = result2.data;
+// 				loadIns.then(function(result3){
+// 					console.log("loaded again",result3);
+// 					console.log($scope.data.instant.temperature);
+// 					$scope.data.instant = result3.data;
+// 				});
+// 			});
+// 		});
 	} ;
 	
     map = new Datamap({
@@ -125,7 +125,7 @@ function mainControllerFct($scope,uiGmapGoogleMapApi, $http, $interval){
 
 
 	var start = function(){	
-		// $interval(reload, 3000);
+		$interval(reload, 3000);
 		
 		map.bubbles($scope.data.events, {
 		 popupTemplate: function(geo, data) {
