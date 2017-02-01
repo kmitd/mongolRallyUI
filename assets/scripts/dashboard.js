@@ -11,222 +11,127 @@ angular.module('dashboardApp', ['uiGmapgoogle-maps','chart.js'])
 	 ChartJsProvider.setOptions({ colors : [ '#803690', '#00ADF9', '#DCDCDC', '#46BFBD', '#FDB45C', '#949FB1', '#4D5360'] });
 })
 
-.controller("MainController", ['$scope','uiGmapGoogleMapApi',"$http", mainControllerFct])
+.controller("MainController", ['$scope','uiGmapGoogleMapApi',"$http", "$interval", mainControllerFct])
 
 
-function mainControllerFct($scope,uiGmapGoogleMapApi, $http){
+function mainControllerFct($scope,uiGmapGoogleMapApi, $http, $interval){
 		
 	/**
 	INiT
 	**/
- 
-	$scope.pathImages = './docs/sensing_data/picts';
+ 	$scope.dataRootPath = "./docs/output"
+	$scope.pathImages = $scope.dataRootPath+'/img';
 	
-	$scope.loadedData = null;
+	$scope.pathAvgsFile = $scope.dataRootPath+'/averages.json';
+	$scope.pathEventsFile = $scope.dataRootPath+'/event.json';
+	$scope.pathInstantSensingFile = $scope.dataRootPath+'/instant.json';
+	
+	$scope.data = { };
+	
 	$scope.mapping = {
 		GB : "GBR", CH :"CHE" ,AU: "AUT", RO: "ROU", HU: "HUN",
 		FR: "FRA", BG: "BGR",DE: "DEU",TM :"TKM", TJ: "TJK", KG: "KGZ", KZ :"KAZ" ,
-		MN : "MNG", UZ : "UZB", AM : "ARM", GE: "GEO", TR : "TUR", IR: "IRN"
+		MN : "MNG", UZ : "UZB", AM : "ARM", GE: "GEO", TR : "TUR", IR: "IRN", RU : "RUS", BY : "BLR", PL: "POL", NL : "NLD"
 	}// any better way?
 
-	$scope.mongolRallyCountries = { GBR : {fillKey: "TOVISIT"},AUT : {fillKey: "VISITED"},ROU : {fillKey: "VISITED"},HUN : {fillKey: "TOVISIT"}, FRA: {fillKey: "TOVISIT"}, BGR: {fillKey: "TOVISIT"}, DEU : {fillKey: "VISITED"},TKM: { fillKey: 'TOVISIT'},TJK : { fillKey: 'TOVISIT'},KGZ : { fillKey: 'TOVISIT'},KAZ : { fillKey: 'TOVISIT'}, MNG : { fillKey: 'TOVISIT'},UZB: {fillKey: 'TOVISIT'},ARM: {fillKey: 'TOVISIT'},GEO: {fillKey: 'TOVISIT'},TUR: {fillKey: 'TOVISIT'},IRN: {fillKey: 'TOVISIT'}, BEL : {fillKey: 'VISITED'}
+	$scope.mongolRallyCountries = { BLR : {fillKey: "NONE"}, NLD : {fillKey: "NONE"},POL : {fillKey: "NONE"}, RUS : {fillKey : "NONE"}, GBR : {fillKey: "TOVISIT"},AUT : {fillKey: "TOVISIT"},ROU : {fillKey: "TOVISIT"},HUN : {fillKey: "TOVISIT"}, FRA: {fillKey: "TOVISIT"}, BGR: {fillKey: "TOVISIT"}, DEU : {fillKey: "TOVISIT"},TKM: { fillKey: 'TOVISIT'},TJK : { fillKey: 'TOVISIT'},KGZ : { fillKey: 'TOVISIT'},KAZ : { fillKey: 'TOVISIT'}, MNG : { fillKey: 'TOVISIT'},UZB: {fillKey: 'TOVISIT'},ARM: {fillKey: 'TOVISIT'},GEO: {fillKey: 'TOVISIT'},TUR: {fillKey: 'TOVISIT'},IRN: {fillKey: 'TOVISIT'}, BEL : {fillKey: 'TOVISIT'}
 };
 	
 	var map;
-	var getClosestPlace = function(event){
-		$http({
-		  method: 'GET',
-		  url: 'http://api.geonames.org/findNearbyPlaceNameJSON?username=KMI_TD&lat='+//'https://maps.googleapis.com/maps/api/geocode/json?latlng='+
-		  event.latitude+'&lng='+event.longitude +"&lang=en&"
-		  //+'&key=AIzaSyDEJDKFSDl6ndtqnRykHyahKnoQG_KN_hQ&result_type=country'
-		}).then(function successCallback(response) {
-			//console.log(response.data.geonames[0].name);
-			event["closestplace"] = response.data.geonames[0].name;
-			
-		  }, function errorCallback(response,error) {
-			  console.log(error);
-		  });
-	}
 
-	var getCountry = function(i ) {
-		$http({
-		  method: 'GET',
-		  url: 'http://api.geonames.org/countryCode?username=KMI_TD&lat='+//'https://maps.googleapis.com/maps/api/geocode/json?latlng='+
-		  $scope.loadedData[i].latitude+'&lng='+$scope.loadedData[i].longitude
-		  //+'&key=AIzaSyDEJDKFSDl6ndtqnRykHyahKnoQG_KN_hQ&result_type=country'
-		}).then(function successCallback(response) {
-			 console.log(response.data);
-			$scope.mongolRallyCountries[$scope.mapping[response.data.trim()]] = { fillKey : "VISITED" };
-			map.updateChoropleth($scope.mongolRallyCountries);
-		  }, function errorCallback(response,error) {
-			  console.log(error);
-		  });
-	}
+
+	var loadEvents = function() {
+		return $http.get($scope.pathEventsFile).success(function(response){
+	        $scope.data.events = response;
+	    })
+		.error(function(data,status,error,config){
+			console.log("Cannot read events file");
+		});
+	};
 	
-
-
-	var atStart = function() {
-		return $http.get('docs/sensing_data/readings/events.json')
-		.success(function(data) {
-			$scope.loadedData = data;
-	 		if ($scope.loadedData.length > 1) {
-	 			for (step = 0; step < $scope.loadedData.length; step++) {
-	 				getCountry(step);
-	 				getClosestPlace($scope.loadedData[step]);
-	 			};
-	 		}
-			// console.log($scope.loadedData);
+	var loadAverages = function() {
+		return 	$http.get($scope.pathAvgsFile).success(function(response1){
+        	$scope.data.averages = response1;
+		})	
+    	.error(function(data,status,error,config){
+			console.log("Cannot read averages file");
+		})	
+	};
+	
+	var loadInstant = function() {
+		return 	$http.get($scope.pathInstantSensingFile).success(function(response2){
+        	$scope.data.instant = response2;         
 		})
 		.error(function(data,status,error,config){
-			console.log(error);
+			console.log("Cannot read instant sensing file");
 		});
-	}
-
-	var start = atStart();
+	};
 	
-	start.then(function(result){
+	var loadEvent = loadEvents();
+	var loadAvg = loadAverages();
+	var loadIns = loadInstant();
 		
-		 
-		/**
-		LINECHART
-		**/
-		// TODO here
-		$scope.loadedData = result.data;
-		// console.log(1,$scope.mongolRallyCountries);
-// 		for (var key in $scope.mongolRallyCountries) {
-// 			if (key == "GBR") {
-// 				console.log(2,key,$scope.mongolRallyCountries[key]);
-// 			}
-//
-// 		}
-		
-		// $scope.labels = $.map($scope.loadedData, function(value, index) {
-// 			return [timeConverter(value.timestamp)];
-// 		});
-//
-//
-// 		$scope.series = ['fitbeat_I', 'fitbeat_M'];
-//
-// 		f1 = $.map($scope.loadedData, function(value, index) {
-// 		    return [value["fitbeat1"]["beats_per_minute"]] ;
-// 		});
-//
-// 		f2 = $.map($scope.loadedData, function(value, index) {
-// 		    return [value["fitbeat2"]["beats_per_minute"]];
-// 		});
-//
-// 		$scope.data = [f1,  f2];
-//
-// 		 $scope.onClick = function (points, evt) {
-// 		   console.log(points, evt);
-// 		 };
-//
-// 		 $scope.datasetOverride = [{ yAxisID: 'y-axis-1' }, { yAxisID: 'y-axis-2' }];
-// 		 $scope.options = {
-// 		   scales: {
-// 		     yAxes: [
-// 		       {
-// 		         id: 'y-axis-1',
-// 		         type: 'linear',
-// 		         display: true,
-// 		         position: 'left'
-// 		       },
-// 		       {
-// 		         id: 'y-axis-2',
-// 		         type: 'linear',
-// 		         display: true,
-// 		         position: 'right'
-// 		       }
-// 		     ]
-// 		   }
-// 		 };
-//
-		 
-		 
-$scope.labels = ["17/07/17", "18/07/17", "19/07/17", "20/07/17", "21/07/17", "22/07/17", "23/07/17","17/07/17", "18/07/17", "19/07/17", "20/07/17", "21/07/17", "22/07/17", "23/07/17","17/07/17", "18/07/17", "19/07/17", "20/07/17", "21/07/17", "22/07/17", "23/07/17","17/07/17", "18/07/17", "19/07/17", "20/07/17", "21/07/17", "22/07/17", "23/07/17","17/07/17", "18/07/17", "19/07/17", "20/07/17", "21/07/17", "22/07/17", "23/07/17","17/07/17", "18/07/17", "19/07/17", "20/07/17", "21/07/17", "22/07/17", "23/07/17"];
- $scope.series = ['Series A'];
- $scope.data = [
+	loadEvent.then(function(){
+		loadAvg.then(function(){
+			loadIns.then(function(){
+				start();
+			});
+		});
+	});
 
-   [28, 48, 40, 19, 86, 27, 90,28, 48, 40, 19, 86, 27, 90,28, 48, 40, 19, 86, 27, 90,28, 48, 40, 19, 86, 27, 90, 28, 48, 40, 19, 86, 27, 90,28, 48, 40, 19, 86, 27, 90,28, 48, 40, 19, 86, 27, 90,28, 48, 40, 19, 86, 27, 90]
- ];
-  $scope.onClick = function (points, evt) {
-    console.log(points, evt);
-  };
-  $scope.datasetOverride = [{ yAxisID: 'y-axis-1' }, { yAxisID: 'y-axis-2' }];
-  $scope.options = {
-    scales: {
-	    xAxes: [{
-	                   display: false
-	               }],
-      yAxes: [
-        {
-          id: 'y-axis-1',
-          type: 'linear',
-          display: true,
-          position: 'left'
-        }
-      ]
-    }
-  };
-  	 
-  $scope.line = {};
-  $scope.line.labels = ["January", "February", "March", "April", "May", "June", "July"];
-   $scope.line.series = ['Series A', 'Series B'];
-   $scope.line.data = [
-     [65, 59, 80, 81, 56, 55, 40],
-     [28, 48, 40, 19, 86, 27, 90]
-   ];
-   
-   
-   $scope.donut = {};   
-   $scope.donut.labels = ["Sunny", "Rainy", "Cloudy"];
-     $scope.donut.data = [300, 500, 100];
-   
-   
-     $scope.donut2 = {};   
-     $scope.donut2.labels = ["Foggy", "Dry", "Windy"];
-       $scope.donut2.data = [40, 17, 20];
-	   
- 	/**TIMELINE**/
-   
- 	     map = new Datamap({
- 			element: document.getElementById('map_container'),
- 			fills: {
- 			            VISITED: '#008000',
- 			            TOVISIT: '#ADD8E6',
- 			            defaultFill: '#afafaf',
- 						PITSTOP : "#000000"
- 			        },
- 	        data: $scope.mongolRallyCountries,
- 			scope: 'world',
- 		    // Zoom in on Africa
- 		    setProjection: function(element) {
-				
-				
- 		      var projection = d3.geo.equirectangular()
- 		        .center([50, 40])
- 		        // .rotate([4.4, 0])
- 		        .scale(400)
- 		        .translate([element.offsetWidth / 2, element.offsetHeight / 2]);
- 		      var path = d3.geo.path()
- 		        .projection(projection);
- 	    		return {path: path, projection: projection};
- 	  		}
 
- 		});
+
+	function reload() {
+		map.updateChoropleth($scope.mongolRallyCountries);
+		loadEvent.then(function(result){
+			// $scope.data.events = result.data;
+			loadAvg.then(function(result2){
+				// $scope.data.averages = result2.data;
+				loadIns.then(function(result3){
+					console.log("loaded again",result3);
+					console.log($scope.data.instant.temperature);
+					$scope.data.instant = result3.data;
+				});
+			});
+		});
+	} ;
+	
+    map = new Datamap({
+	element: document.getElementById('map_container'),
+	fills: {
+	            VISITED: '#008000',
+	            TOVISIT: '#ADD8E6',
+	            defaultFill: '#afafaf',
+				NONE : '#afafaf',
+				PITSTOP : "#000000"
+	     },
+    data: $scope.mongolRallyCountries,
+	scope: 'world',
+    // Zoom in on Africa
+    setProjection: function(element) {
 		
 		
-		map.bubbles($scope.loadedData, {
+      var projection = d3.geo.equirectangular()
+        .center([50, 40])
+        // .rotate([4.4, 0])
+        .scale(400)
+        .translate([element.offsetWidth / 2, element.offsetHeight / 2]);
+      var path = d3.geo.path()
+        .projection(projection);
+   		return {path: path, projection: projection};
+ 		}
+
+	});
+
+
+	var start = function(){	
+		// $interval(reload, 3000);
+		
+		map.bubbles($scope.data.events, {
 		 popupTemplate: function(geo, data) {
 			 
-			 // TODO that's definitely a trick. (Discover why data and $scope.loadedData are different)
-			 var result = $scope.loadedData.filter(function( obj ) {
-			   return obj.timestamp == data.timestamp;
-			 });
-			 // console.log(result);
-			 
 			 return "<div class='hoverinfo' ng-bind=\"hoverEdit=true\" ><div class=\"text-center\"> Recorded on <b>" + timeConverter(data.timestamp)
-			 	+ "</b> next to "+result[0].closestplace+"</div><div class='text-center'><br/><h4>"+data.title+"</h4><img class='img img-round' height='200px' src='"+$scope.pathImages+"/"+data.img+"'  alt='img'><p>"+data.description+"</p></div></div>";
+			 	+ "</b> next to "+data.name+","+data.countryName+"</div><div class='text-center'><br/><h4>"+data.title+"</h4><img class='img img-round' height='200px' src='"+$scope.pathImages+"/"+data.img+"'  alt='img'><p>"+data.description+"</p></div></div>";
 				// testo, nome , luogo, timestamp
 		 },
 		 borderColor: '#000000',
@@ -237,15 +142,18 @@ $scope.labels = ["17/07/17", "18/07/17", "19/07/17", "20/07/17", "21/07/17", "22
 		
 		var step ;
 		var arcs = [];
-		if ($scope.loadedData.length > 1) {
-			for (step = 0; step < $scope.loadedData.length-1; step++) {
+		if ($scope.data.events.length > 1) {
+			for (step = 0; step < $scope.data.events.length-1; step++) {
+				// TODO change this
+				$scope.mongolRallyCountries[$scope.mapping[$scope.data.events[step].countryCode]] = { fillKey : "VISITED" };
+				console.log();
 				var arc = {
 					origin : {
-						latitude: $scope.loadedData[step]['latitude'],
-						longitude: $scope.loadedData[step]['longitude']
+						latitude: $scope.data.events[step]['latitude'],
+						longitude: $scope.data.events[step]['longitude']
 					}, destination: {
-						latitude: $scope.loadedData[step+1]['latitude'],
-						longitude: $scope.loadedData[step+1]['longitude']
+						latitude: $scope.data.events[step+1]['latitude'],
+						longitude: $scope.data.events[step+1]['longitude']
 					}
 				}
 				arcs.push(arc);
@@ -261,66 +169,29 @@ $scope.labels = ["17/07/17", "18/07/17", "19/07/17", "20/07/17", "21/07/17", "22
 			
 		}
 		
-		setTimeout(function(){
-			map.updateChoropleth($scope.mongolRallyCountries);
+		
+		/**
+		BARS
+		**/
+		$scope.bar = { labels : [], speed : { data : []}, temperature : {data : []}, humidity : {data : []}} ;
+	
+		angular.forEach($scope.data.averages, function(value,key){
+			$scope.bar.labels.push(key);
+		 	$scope.bar.speed.data.push($scope.data.averages[key].speed);
+		 	$scope.bar.temperature.data.push($scope.data.averages[key].temperature);		 
+		 	$scope.bar.humidity.data.push($scope.data.averages[key].humidity);		 
 			
-		}, 1000); 
-		
-});
+		});
 		
 		
-		//
+		/**
+		Instant sensing
+		**/
+		
+		
+			
+};
 
-
-	
-
-	/**
-	DONUT
-	**/
-	$scope.bar = {} ;
-	$scope.temp = {} ;
-	
-
-	$scope.bar.labels = ["GB","FR","HU", "BG","TR"];
-	
-	// var newNumbers = Object.keys($scope.mongolRallyCountries).filter(function(itm){
-	//     return (item);
-	// }).map(function(number){
-	//     return item+"!";
-	// });
-	//
-	// console.log(newNumbers);
-	
-//["Sunny", "Rainy", "Cloudy"];
-	$scope.bar.data = [112, 130, 130,110,80];
-	$scope.temp.data2 = [12, 25, 23,21,18]
-	/**
-	Bubble
-	**/  
-	
-	$scope.bubble = {};
-	$scope.bubble.series = ['Series A', 'Series B'];
-
-	$scope.bubble.data = [
-	      [{
-	        x: 40,
-	        y: 10,
-	        r: 20
-	      }],
-	      [{
-	        x: 10,
-	        y: 30,
-	        r: 50
-	      }],[{
-	        x: 20,
-	        y: 20,
-	        r: 30
-	      }],[{
-	        x: 15,
-	        y: 20,
-			  r: 10
-	      }]
-	    ];
 		
 		
 }

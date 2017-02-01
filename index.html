@@ -109,16 +109,18 @@
 		      
 			  <div class="col-md-4 col-sm-4" id="bubble-chart" >
 	  			<div class="panel panel-success">
-	  				<div class="panel-heading">Jolt Variation</div>
+	  				<div class="panel-heading">Avg Humidity per Country</div>
 	  				<div class="panel-body">
-				              	<span class="text-muted">Bumps on the road</span>
+				              	<span class="text-muted">% of humidity</span>
   				  			  <br/><br/>
 								
-							   	<!-- <canvas id="bubble" class="chart chart-bubble ng-isolate-scope" chart-data="bubble.data" chart-options="bubble.options"></canvas> -->
-							<canvas id="line" class="chart chart-line" chart-data="data"
+							  
+ 				               <canvas id="barHum" class="chart chart-bar chart-xs ng-isolate-scope" chart-data="bar.humidity.data" chart-labels="bar.labels" chart-hover="donut.hover"></canvas>
+							   	
+							<!-- <canvas id="line" class="chart chart-line" chart-data="data"
 							chart-labels="labels"  chart-options="options"
 							chart-dataset-override="datasetOverride" chart-click="onClick">
-							</canvas>
+							</canvas> -->
 					</div>
 				</div>
 			</div>
@@ -127,10 +129,10 @@
 	  			<div class="panel panel-success">
 	  				<div class="panel-heading">Avg Speed per Country</div>
 	  				<div class="panel-body">
-				              <span class="text-muted text-centered">Km/h</span>
+				              <span class="text-muted text-centered">km/h</span>
 				  			  <br/><br/>
 							  
-				               <canvas id="bar" class="chart chart-bar chart-xs ng-isolate-scope" chart-data="bar.data" chart-labels="bar.labels" chart-hover="donut.hover"></canvas>
+				               <canvas id="barSpeed" class="chart chart-bar chart-xs ng-isolate-scope" chart-data="bar.speed.data" chart-labels="bar.labels" chart-hover="donut.hover"></canvas>
 							   
 					</div>
 				</div>
@@ -142,26 +144,26 @@
 	  				<div class="panel-body">
 				                <span class="text-muted">ºC</span>
 				  			  <br/><br/>
-				  			  <canvas id="bar" class="chart chart-bar chart-xs ng-isolate-scope" chart-data="temp.data2" chart-labels="bar.labels" chart-hover="donut.hover"></canvas>
+				  			  <canvas id="barTemp" class="chart chart-bar chart-xs ng-isolate-scope" chart-data="bar.temperature.data" chart-labels="bar.labels" chart-hover="donut.hover"></canvas>
 					</div>
 				</div>
             </div>
 			
 			
 
-            <div class="col-md-6 offset-md-3 col-sm-6 offset-sm-3"  >
-	  			<div class="panel panel-primary">
+            <div class="col-md-12  col-sm-12 "  >
+	  			<div class="panel panel-primary text-center">
 	  				<div class="panel-heading">Heartbeat</div>
 	  				<div class="panel-body">
 						
-						<div class="">
+						<!-- <div class="">
 							   <canvas class="chart chart-line" chart-data="line.data" chart-labels="line.labels" chart-series="line.series" ></canvas>
 						</div>
-						<br/><br/>
+						<br/><br/> -->
 						<div class="">
 							   			  <h2 ><i class="fa fa-heartbeat fa-2x" ></i> <i class="fa fa-male fa-2x" ></i>
-							   103 bpm <i class="fa fa-heartbeat fa-2x" ></i><i class="fa fa-female fa-2x" ></i>
-							   153 bpm</h2>
+							   {{data.instant.fitbeat1.beats_per_minute}} bpm <i class="fa fa-heartbeat fa-2x" ></i><i class="fa fa-female fa-2x" ></i>
+							   {{data.instant.fitbeat2.beats_per_minute}} bpm</h2>
 						</div>
 					</div>
 				</div>
@@ -171,7 +173,7 @@
 			
             <div class="col-md-12  col-sm-12 "  >
 	  			<div class="panel panel-warning">
-	  				<div class="panel-heading">Weather info</div>
+	  				<div class="panel-heading">Other info</div>
 	  				<div class="panel-body">
 						
 			         
@@ -182,14 +184,14 @@
 				              	<tr class="active" >
 				              		<th class="text-center">Current temperature</th>
 									<th class=" text-center">Current humidity</th>
-									<th class=" text-center">Current weather</th>
+									<th class=" text-center">Current speed</th>
 				              	</tr>
 				              </thead>
 				              <tbody>
-				                <tr> <td> <h2><i class="fa fa-thermometer-empty fa-1x" ></i>32 ºC</h2></td>
+				                <tr> <td> <h2><i class="fa fa-thermometer-empty fa-1x" ></i> {{data.instant.temperature}} ºC</h2></td>
 				               
-									 <td> <h2><i class="fa fa-tint" aria-hidden="true"></i> 88 %</h2></td>
-									  <td> <h2><i class="fa fa-sun-o" aria-hidden="true"></i> Sunny</h2></td>
+									 <td> <h2><i class="fa fa-tint" aria-hidden="true"></i> {{data.instant.humidity}} %</h2></td>
+									  <td> <h2><i class="fa fa-car" aria-hidden="true"></i> {{data.instant.speed}} km/h</h2></td>
 				                </tr>
                
 				              </tbody>
@@ -197,21 +199,21 @@
 				          </div>
 						  
 						  <br/>
-   			           <div class="row">
+   			           <!-- <div class="row">
    						   <div class=" col-md-4 col-sm-4 offset-md-2 offset-sm-2 ">
 							   <p class="text-center">Rainy/Sunny/Cloudy days</p>
    						  	 <canvas class="chart chart-doughnut"  chart-data="donut.data" chart-labels="donut.labels">
    						  	</canvas>
-   					 	 	</div> 
+   					 	 	</div>
      				          <div class="col-md-4 col-sm-4">
    							   <p class="text-center">Foggy/Windy/Dry days</p>
-								  
+
      							  <canvas class="chart chart-doughnut" chart-data="donut2.data" chart-labels="donut2.labels">
      							  </canvas>
      						  </div>
    						</div>
-						
-					</div>
+
+					</div> -->
 				</div>
 				
             </div>
