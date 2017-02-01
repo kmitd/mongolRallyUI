@@ -42,7 +42,7 @@ function mainControllerFct($scope,uiGmapGoogleMapApi, $http, $interval){
 
 	var loadEvents = function() {
 		return $http.get($scope.pathEventsFile).success(function(response){
-	        $scope.data.events = response;
+			$scope.data.events = response;
 	    })
 		.error(function(data,status,error,config){
 			console.log("Cannot read events file");
@@ -79,21 +79,20 @@ function mainControllerFct($scope,uiGmapGoogleMapApi, $http, $interval){
 		});
 	});
 
-
-
 	function reload() {
 		map.updateChoropleth($scope.mongolRallyCountries);
-		// loadEvent.then(function(result){
-// 			// $scope.data.events = result.data;
-// 			loadAvg.then(function(result2){
-// 				// $scope.data.averages = result2.data;
-// 				loadIns.then(function(result3){
-// 					console.log("loaded again",result3);
-// 					console.log($scope.data.instant.temperature);
-// 					$scope.data.instant = result3.data;
-// 				});
-// 			});
-// 		});
+		
+		var loadEventA = loadEvents();
+		var loadAvgA = loadAverages();
+		var loadInsA = loadInstant();
+		
+		loadEventA.then(function(result){
+			loadAvgA.then(function(result2){
+				loadInsA.then(function(result3){
+					console.log("loaded again");
+				});
+			});
+		});
 	} ;
 	
     map = new Datamap({
