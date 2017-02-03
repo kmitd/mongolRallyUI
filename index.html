@@ -20,67 +20,99 @@
     <link href="assets/css/main-style.css" rel="stylesheet" /> 
 	
   </head>
+      <!-- <a class="navbar-brand" href="#"><img class="img img-round " width="60%" src="assets/img/dashboard_logo.png"  alt="logo"/></a> -->
 
   <body ng-controller="MainController">
-    <nav class="navbar navbar-toggleable-md navbar-inverse fixed-top bg-inverse">
+	 
+	<nav class="navbar navbar-toggleable-md navbar-inverse fixed-top bg-inverse">
       <button class="navbar-toggler navbar-toggler-right hidden-lg-up" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <a class="navbar-brand" href="#">Milton Keynes to Mongolia</a>
+      <a class="navbar-brand" href="#" >MK2MG</a>
 
       <div class="collapse navbar-collapse" id="navbarsExampleDefault">
         <ul class="navbar-nav mr-auto">
-			
+
             <li class="nav-item active">
               <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="http://miltonkeynestomongolia.com">About</a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item pull-right">
               <a class="nav-link" href="mailto:ilaria.tiddi@open.ac.uk">Contacts</a>
             </li>
-			
+
         </ul>
-        <form class="form-inline mt-2 mt-md-0">
-          <input class="form-control mr-sm-2" type="text" placeholder="Search">
-          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-        </form>
       </div>
     </nav>
 
     <div class="container-fluid">
       <div class="row">
-        <nav class="col-sm-3 col-md-2 hidden-xs-down bg-faded sidebar">
+        <nav class="offset-md-10 offset-sm-10  col-sm-3 col-md-2 hidden-xs-down bg-faded sidebar">
           <ul class="nav nav-pills flex-column">
-            <li class="nav-item">
+	          <li class="nav-item">
+				  <h3 class="nav-link text-center">Credits</h3>
+			  </li>
+            <!-- <li class="nav-item">
               <a class="nav-link active" href="#">Home <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Where are we</a>
+              <a class="nav-link" href="#route">Where are we</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Analytics</a>
+              <a class="nav-link" href="#analytics">Analytics</a>
             </li>
 
 		      <li class="nav-item">
-		        <a class="nav-link" href="#">Social</a>
+		        <a class="nav-link" href="#social">Social</a>
 		      </li>
               <li class="nav-item disabled">
                    <div class="nav-link text-center" >
    	   			 <img class="img img-round " width="60%" src="assets/img/MK_logo.png"  alt="MKpandas46-logo">
                    </div>
+              </li> -->
+              <li class="nav-item ">
+                   <div class="nav-link text-center" >
+   	   			 <a href="http://kmi.open.ac.uk"><img class="img img-round " width="90%" src="assets/img/kmi-logo-hires.png"  alt="KMi-logo"></a>
+                   </div>
               </li>
+			  
+              <li class="nav-item ">
+                   <div class="nav-link text-center" >
+   	   			 <a href="http://open.ac.uk"><img class="img img-round " width="60%" src="assets/img/ou-logo.png"  alt="ou-logo"></a>
+                   </div>
+              </li>
+			  
+              <li class="nav-item ">
+                   <div class="nav-link text-center" >
+   	   			 <a href="http://mk50.co.uk"><img class="img img-round " width="90%" src="assets/img/logo-placeholder.png"  alt="mk50-logo"></a>
+                   </div>
+              </li>
+			  
           </ul>
 
         </nav>
+		
 
-        <main class="col-sm-9 offset-sm-3 col-md-10 offset-md-2 pt-3" >
-          <h1>Dashboard</h1>
+        <main class="col-sm-9  col-md-10  pt-3" >
+	
+	
+    		<section class="row">
+				<div class="col-md-8 offset-md-2 offset-sm-2 col-sm-8">
+					<a class="text-center"><img class="img navbar-brand" width="100%" src="assets/img/scritta_only_dash.png"  alt="logo"/></a>
+				</div>
+				
+      	  	</section>
+	  
+	  
+	  
+          <h1  id="route">Dashboard</h1>
 		  
+
  
 		
-		<section class="row">
+		<section class="row" >
 			<div class="col-lg-12 col-sm-12">
 				<h3><i class="fa fa-clock-o fa-fw"></i>Timeline</h3>
 				<div id="map_container" style="position: relative;  width: 100%; height: 500px;"></div>
@@ -99,11 +131,11 @@
 	                    </div> -->
 		</section>
 		
-		<section >
-			<br/><br>
-		<h1 class="text-center"><i class="fa fa-bar-chart" ></i> Analytics</h1>
-			
-		</section> 
+		
+		<br/><br>
+		
+		
+		<h1 id="analytics" class="text-center"><i class="fa fa-bar-chart" ></i> Analytics</h1>
 		
 		<section class="row">
 		      
@@ -178,7 +210,7 @@
 						
 			         
 					  
-				          <div class="table-responsive offset-2 col-md-8  col-sm-8 ">
+				          <div class="table-responsive col-md-8  col-sm-8 ">
 				            <table class="table text-center">
 				              <thead>
 				              	<tr class="active" >
@@ -221,13 +253,15 @@
                
               
           
-            </section>
+            </section >
 		  <br/>
-		  <h1 class="text-center"><i class="fa fa-twitter" ></i> <i class="fa fa-facebook" ></i> We are also social
-		  <i class="fa fa-instagram fa-right" ></i> <i class="fa fa-pinterest fa-right" ></i> 
-	  </h1>
-		  <section class="row ">
-			 
+		  
+ 		  <h1 id="social" class="text-center"><i class="fa fa-twitter" ></i> <i class="fa fa-facebook" ></i> We are also social
+ 		  <i class="fa fa-instagram fa-right" ></i> <i class="fa fa-pinterest fa-right" ></i> 
+ 	  		</h1>
+		 
+		  <section  class="row ">
+	  		 
 			  <div class="col-md-4 col-sm-5 offset-sm-3 offset-md-2 placeholder">
 			  	
 				<div id="fb-root"></div>
