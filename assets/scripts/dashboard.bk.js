@@ -1,23 +1,28 @@
 angular.module('dashboardApp', [
+	'uiGmapgoogle-maps',
 	'ngMap', 
 	'chart.js'])
 
 
-.config(function(ChartJsProvider) {
-  
+.config(function(uiGmapGoogleMapApiProvider,ChartJsProvider) {
+    uiGmapGoogleMapApiProvider.configure({
+        key: 'AIzaSyDEJDKFSDl6ndtqnRykHyahKnoQG_KN_hQ',
+        v: '3.20', //defaults to latest 3.X anyhow
+        libraries: 'weather,geometry,visualization'
+    });
  //
 	 ChartJsProvider.setOptions({ colors : [ '#803690', '#00ADF9', '#DCDCDC', '#46BFBD', '#FDB45C', '#949FB1', '#4D5360'] });
 })
 
-.controller("MainController", ['$scope',"$http", "$interval", mainControllerFct])
+.controller("MainController", ['$scope','uiGmapGoogleMapApi',"$http", "$interval", mainControllerFct])
 
 
-function mainControllerFct($scope, $http, $interval){
+function mainControllerFct($scope,uiGmapGoogleMapApi, $http, $interval){
 		
 	/**
 	INiT
 	**/
-	$scope.googleMapsUrl="https://maps.googleapis.com/maps/api/js?key=AIzaSyDEJDKFSDl6ndtqnRykHyahKnoQG_KN_hQ";
+	$scope.googleMapsUrl="https://maps.googleapis.com/maps/api/js?key=AIzaSyDZEjgMI4wNaX7UJGZBIF2hwOcPxZWS2I4";
 	
  	$scope.dataRootPath = "./docs/output"
 	$scope.pathImages = $scope.dataRootPath+'/img';
@@ -42,8 +47,6 @@ function mainControllerFct($scope, $http, $interval){
 	var loadEvents = function() {
 		return $http.get($scope.pathEventsFile).success(function(response){
 			$scope.data.events = response;
-			
-			
 	    })
 		.error(function(data,status,error,config){
 			console.log("Cannot read events file");
@@ -96,7 +99,6 @@ function mainControllerFct($scope, $http, $interval){
 		});
 	} ;
 	
-	
     map = new Datamap({
 	element: document.getElementById('map_container'),
 	fills: {
@@ -128,6 +130,7 @@ function mainControllerFct($scope, $http, $interval){
 	var start = function(){	
 		//$interval(reload, 3000);
 		
+		
 		map.bubbles($scope.data.events, {
 		 popupTemplate: function(geo, data) {
 			 
@@ -140,22 +143,14 @@ function mainControllerFct($scope, $http, $interval){
 		 fillOpacity: 1
 		});
 		
-		$scope.ways = [];
+		
 		var step ;
 		var arcs = [];
 		if ($scope.data.events.length > 1) {
 			for (step = 0; step < $scope.data.events.length-1; step++) {
 				// TODO change this
 				$scope.mongolRallyCountries[$scope.mapping[$scope.data.events[step].countryCode]] = { fillKey : "VISITED" };
-				
-				
-				var arc2 = {
-					location: {
-						lat: $scope.data.events[step]['latitude'],
-						lng: $scope.data.events[step]['longitude']
-					}, 
-					stopover:true  
-				};
+				console.log();
 				var arc = {
 					origin : {
 						latitude: $scope.data.events[step]['latitude'],
@@ -164,13 +159,11 @@ function mainControllerFct($scope, $http, $interval){
 						latitude: $scope.data.events[step+1]['latitude'],
 						longitude: $scope.data.events[step+1]['longitude']
 					}
-				};
-				
+				}
 				arcs.push(arc);
-				$scope.ways.push(arc2);
 			}
 		}
-		console.log($scope.ways);
+
 		map.arc(arcs, { strokeColor: 'rgba(100, 10, 200, 1)', strokeWidth: 2, arcSharpness: 0});
 		
 	

@@ -24,8 +24,8 @@
 
   <body ng-controller="MainController">
 	 
-	<nav class="navbar navbar-toggleable-md navbar-inverse fixed-top bg-inverse">
-      <button class="navbar-toggler navbar-toggler-right hidden-lg-up" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+	<nav class="navbar navbar-toggleable-md navbar-inverse fixed-top bg-inverse navbar-custom">
+      <button class="navbar-toggler navbar-toggler-right hidden-lg-up navbar-toggler-custom" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <a class="navbar-brand" href="#" >MK2MG</a>
@@ -54,24 +54,7 @@
 	          <li class="nav-item">
 				  <h3 class="nav-link text-center">Credits</h3>
 			  </li>
-            <!-- <li class="nav-item">
-              <a class="nav-link active" href="#">Home <span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#route">Where are we</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#analytics">Analytics</a>
-            </li>
-
-		      <li class="nav-item">
-		        <a class="nav-link" href="#social">Social</a>
-		      </li>
-              <li class="nav-item disabled">
-                   <div class="nav-link text-center" >
-   	   			 <img class="img img-round " width="60%" src="assets/img/MK_logo.png"  alt="MKpandas46-logo">
-                   </div>
-              </li> -->
+           
               <li class="nav-item ">
                    <div class="nav-link text-center" >
    	   			 <a href="http://kmi.open.ac.uk"><img class="img img-round " width="90%" src="assets/img/kmi-logo-hires.png"  alt="KMi-logo"></a>
@@ -107,33 +90,64 @@
 	  
 	  
 	  
-          <h1  id="route">Dashboard</h1>
+          <h1  id="route"><i class="fa fa-map-o fa-fw"></i>On the way</h1>
 		  
 
- 
+	   
+		
+<!--		 <section class="row" >
+			<div class="col-lg-12 col-sm-12">
+		 	   <div map-lazy-load="https://maps.google.com/maps/api/js" map-lazy-load-params="{{googleMapsUrl}}">
+		 			<h4 class="text-custom">Map</h4>
+		 			<ng-map class="gmap" center="[53.413899, 40.123157]" zoom="4">
+						<directions draggable="false" waypoints="[{'location': { 'lat': 52.1766123, 'lng': 7.365355299999999 }, stopover:true }, { 'location': { 'lat': 52.1466123, 'lng': 24.9653553 }, stopover:true } ]" travel-mode="DRIVING" origin="{{data.events[0].latitude}},{{data.events[0].longitude}}"  destination="{{data.events[14].latitude}},{{data.events[14].longitude}}">
+							     </directions>
+
+		 		  	</ng-map>
+		 		<hr/>
+		 		</div>
+
+			</div>
+		</section>  -->
+		
 		
 		<section class="row" >
 			<div class="col-lg-12 col-sm-12">
-				<h3><i class="fa fa-clock-o fa-fw"></i>Timeline</h3>
 				<div id="map_container" style="position: relative;  width: 100%; height: 500px;"></div>
 				<br/>
 			</div>
+		</section>
 
-	           	 	<!-- <div class="col-lg-12 col-sm-12" >
-	                    <h3><i class="fa fa-clock-o fa-fw"></i>Timeline</h3>
 
-	                     <ul class="timeline timeline-horizontal">
-							<li ng-repeat="pit in loadedData"  class="timeline-item">
-									<div class="timeline-badge danger" ng-mouseover="mouseover(pit)">{{pit.timestamp}} </div>
-							</li>
+        <!-- <h1><i class="fa fa-clock-o fa-fw"></i>Timeline</h1>
+		<section class="row pre-scrollable">
+	        <div class="col-lg-12 col-sm-12" >
+	                     <ul class="timeline timeline-vertical ">
+	                            <li ng-repeat="pit in data.events track by $index" ng-class="{'timeline-item' : $even , 'timeline-inverted': $odd }">
+									<div class="timeline-badge {{pit.type}}">
+	                                    <i class="fa fa-check"></i>
+	                                </div>
+									<div  class="timeline-panel">
+	                                    <div class="timeline-heading">
+	                                        <h4 class="timeline-title">{{pit.text}}</h4>
+	                                        <p>
+	                                            <small class="text-muted"><i class="fa fa-time"></i>{{pit.timestamp}} via Gengis</small>
+	                                        </p>
+	                                    </div>
+	                                    <div class="timeline-body ">
+	                                       <p>{{pit.description}}</p>
+										   <div class="text-center">
+										   		<img class='img img-round' height='30%' width='30%' ng-src='{{pathImages}}/{{pit.img}}' width="80%" alt='img'>
+	                                       </div>
+										</div>
+	                                </div>
+	                            </li>
+
 
 	                      </ul>
-	                    </div> -->
-		</section>
-		
-		
+	         </div>
+		</section>  -->
 		<br/><br>
-		
 		
 		<h1 id="analytics" class="text-center"><i class="fa fa-bar-chart" ></i> Analytics</h1>
 		
@@ -148,11 +162,6 @@
 								
 							  
  				               <canvas id="barHum" class="chart chart-bar chart-xs ng-isolate-scope" chart-data="bar.humidity.data" chart-labels="bar.labels" chart-hover="donut.hover"></canvas>
-							   	
-							<!-- <canvas id="line" class="chart chart-line" chart-data="data"
-							chart-labels="labels"  chart-options="options"
-							chart-dataset-override="datasetOverride" chart-click="onClick">
-							</canvas> -->
 					</div>
 				</div>
 			</div>
@@ -188,10 +197,6 @@
 	  				<div class="panel-heading">Heartbeat</div>
 	  				<div class="panel-body">
 						
-						<!-- <div class="">
-							   <canvas class="chart chart-line" chart-data="line.data" chart-labels="line.labels" chart-series="line.series" ></canvas>
-						</div>
-						<br/><br/> -->
 						<div class="">
 							   			  <h2 ><i class="fa fa-heartbeat fa-2x" ></i> <i class="fa fa-male fa-2x" ></i>
 							   {{data.instant.fitbeat1.beats_per_minute}} bpm <i class="fa fa-heartbeat fa-2x" ></i><i class="fa fa-female fa-2x" ></i>
@@ -203,14 +208,14 @@
             </div> 
 			
 			
-            <div class="col-md-12  col-sm-12 "  >
+            <div class="col-md-12 col-sm-12 "  >
 	  			<div class="panel panel-warning">
 	  				<div class="panel-heading">Other info</div>
 	  				<div class="panel-body">
 						
 			         
 					  
-				          <div class="table-responsive col-md-8  col-sm-8 ">
+				          <div class="table-responsive col-md-12 col-sm-12">
 				            <table class="table text-center">
 				              <thead>
 				              	<tr class="active" >
@@ -231,21 +236,6 @@
 				          </div>
 						  
 						  <br/>
-   			           <!-- <div class="row">
-   						   <div class=" col-md-4 col-sm-4 offset-md-2 offset-sm-2 ">
-							   <p class="text-center">Rainy/Sunny/Cloudy days</p>
-   						  	 <canvas class="chart chart-doughnut"  chart-data="donut.data" chart-labels="donut.labels">
-   						  	</canvas>
-   					 	 	</div>
-     				          <div class="col-md-4 col-sm-4">
-   							   <p class="text-center">Foggy/Windy/Dry days</p>
-
-     							  <canvas class="chart chart-doughnut" chart-data="donut2.data" chart-labels="donut2.labels">
-     							  </canvas>
-     						  </div>
-   						</div>
-
-					</div> -->
 				</div>
 				
             </div>
@@ -291,19 +281,19 @@
     <!-- Core Scripts - Include with every page -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 	
-	<script src="./js/angular.min.js"></script>   
+	<script src="assets/scripts/angular.min.js"></script>   
     <script src="assets/scripts/angular-simple-logger.js"></script>
     <script src="assets/scripts/lodash.js"></script>
    
     <script src="assets/scripts/angular-google-maps.min.js"></script>
-	
+
+	<script src='assets/scripts/ng-map.min.js'></script>
  	<script src="assets/scripts/dashboard.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.5.3/d3.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/topojson/1.6.9/topojson.min.js"></script>
-	<!-- // <script src="./js/datamaps.world.min.js"></script> -->
 	<script src="./datamaps.world.js"></script>
- 	<script src="./js/Chart.min.js"></script>  
- 	<script src="./js/angular-chart.min.js"></script>
+ 	<script src="assets/scripts/Chart.min.js"></script>  
+ 	<script src="assets/scripts/angular-chart.min.js"></script>
 	<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
 	<script>(function(d, s, id) {
 	  var js, fjs = d.getElementsByTagName(s)[0];

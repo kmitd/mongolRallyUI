@@ -72,3 +72,16 @@ h1 {
   padding-top: 1.5rem;
   padding-bottom: 1.5rem;
 }
+
+.navbar-custom {
+  background-color: #77b659!important;
+  border-color: #488723!important;
+  border:solid 1px;
+}
+
+.navbar-toggler-custom {
+    border-color: #488723!important;
+    border:solid 1px;
+}
+
+
