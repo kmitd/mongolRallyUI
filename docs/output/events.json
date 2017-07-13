@@ -1,0 +1,8 @@
+[
+{"radius":3, "description": "event one", "countryCode": "GB", "title": "this is an event", "timestamp": 1499935574659, "altitude": -1, "img": "20170713-094551.jpg", "longitude": -0.7260502, "countryName": "United Kingdom", "latitude": 52.0247721, "adminName1": "England", "adminName2": "Milton Keynes", "name": "Woolstone"}
+,{"radius":3,"description": "event two", "countryCode": "DE", "title": "second event", "timestamp": 1499935641177, "altitude": -1, "img": "20170713-094655.mp4",  "longitude": 7.365355299999999, "countryName": "Germany", "latitude": 52.1766123, "adminName1": "Germany", "adminName2": "Milton Keynes", "name": "Woolstone"}
+,{"radius":3,"description": "event three", "countryCode": "PL", "title": "third event", "timestamp": 1499935828747, "altitude": -1, "img": "20170713-095000.jpg", "longitude": 21.255355299999998, "countryName": "Poland", "latitude": 51.1566123, "adminName1": "Poland", "adminName2": "Milton Keynes", "name": "Woolstone"}
+,{"radius":3,"description": "event fouuuuuuuuurrrrrrrrrr like the guy on rete4", "countryCode": "GB", "title": "fourth event", "timestamp": 1499935905978, "altitude": -1, "img": "20170713-095100.mp4", "longitude": 36.6853553, "countryName": "United Kingdom", "latitude": 52.6066123, "adminName1": "England", "adminName2": "Milton Keynes", "name": "Woolstone"}
+]
+
+

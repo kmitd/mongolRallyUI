@@ -23,7 +23,7 @@ function mainControllerFct($scope, $http, $interval){
 	$scope.pathImages = $scope.dataRootPath+'/img';
 	
 	$scope.pathAvgsFile = $scope.dataRootPath+'/averages.json';
-	$scope.pathEventsFile = $scope.dataRootPath+'/event.json';
+	$scope.pathEventsFile = $scope.dataRootPath+'/events.json';
 	$scope.pathInstantSensingFile = $scope.dataRootPath+'/instant.json';
 	
 	$scope.data = { };
@@ -41,8 +41,7 @@ function mainControllerFct($scope, $http, $interval){
 
 	var loadEvents = function() {
 		return $http.get($scope.pathEventsFile).success(function(response){
-			$scope.data.events = response;
-			
+			$scope.data.events = response;			
 			
 	    })
 		.error(function(data,status,error,config){
@@ -61,6 +60,7 @@ function mainControllerFct($scope, $http, $interval){
 	
 	var loadInstant = function() {
 		return 	$http.get($scope.pathInstantSensingFile).success(function(response2){
+			
         	$scope.data.instant = response2;         
 		})
 		.error(function(data,status,error,config){
@@ -108,8 +108,7 @@ function mainControllerFct($scope, $http, $interval){
 	     },
     data: $scope.mongolRallyCountries,
 	scope: 'world',
-    // Zoom in on Africa
-    setProjection: function(element) {
+		 setProjection: function(element) {
 		
 		
       var projection = d3.geo.equirectangular()
@@ -124,15 +123,26 @@ function mainControllerFct($scope, $http, $interval){
 
 	});
 	
+  
 
 	var start = function(){	
-		//$interval(reload, 3000);
-		
+		$interval(reload, 3000);
+	 // console.log($scope.ends("20170713-095000.jpg",'.jpg'));
 		map.bubbles($scope.data.events, {
-		 popupTemplate: function(geo, data) {
+		 popupTemplate: function(geo, ff) {
+			 var display = "";
 			 
-			 return "<div class='hoverinfo' ng-bind=\"hoverEdit=true\" ><div class=\"text-center\"> Recorded on <b>" + timeConverter(data.timestamp)
-			 	+ "</b> next to "+data.name+","+data.countryName+"</div><div class='text-center'><br/><h4>"+data.title+"</h4><img class='img img-round' height='200px' src='"+$scope.pathImages+"/"+data.img+"'  alt='img'><p>"+data.description+"</p></div></div>";
+			 if(ends(ff.img,'.jpg')) {
+				 display = "<img class='img img-round' height='240px' src='"+$scope.pathImages+"/"+ff.img+"' alt='img'/>";
+			 }
+			 else if(ends(ff.img,'.mp4')) {
+				 display = "<video  controls autoplay width='320' height='240' ><source src='"+$scope.pathImages+"/"+ff.img+"' type='video/mp4'></video>";
+			 }
+			 return "<div class='hoverinfo' ng-bind=\"hoverEdit=true\" ><div class=\"text-center\"> Recorded on <b>"+ timeConverter(ff.timestamp)
+			 + "</b> next to "+ff.name+","+ff.countryName+"</div><div class='text-center'><br/><h4>"+ff.title+
+			 "</h4>" +display+
+			 "<p>"+ff.description+"</p></div></div>";
+			 ;
 				// testo, nome , luogo, timestamp
 		 },
 		 borderColor: '#000000',
@@ -144,6 +154,7 @@ function mainControllerFct($scope, $http, $interval){
 		var step ;
 		var arcs = [];
 		if ($scope.data.events.length > 1) {
+			
 			for (step = 0; step < $scope.data.events.length-1; step++) {
 				// TODO change this
 				$scope.mongolRallyCountries[$scope.mapping[$scope.data.events[step].countryCode]] = { fillKey : "VISITED" };
@@ -170,7 +181,7 @@ function mainControllerFct($scope, $http, $interval){
 				$scope.ways.push(arc2);
 			}
 		}
-		console.log($scope.ways);
+		// console.log($scope.ways);
 		map.arc(arcs, { strokeColor: 'rgba(100, 10, 200, 1)', strokeWidth: 2, arcSharpness: 0});
 		
 	
@@ -185,13 +196,16 @@ function mainControllerFct($scope, $http, $interval){
 		/**
 		BARS
 		**/
-		$scope.bar = { labels : [], speed : { data : []}, temperature : {data : []}, humidity : {data : []}} ;
+		$scope.bar = { labels : [], speed : { data : []}, engine : { data : []}, temperature : {data : []}, humidity : {data : []}} ;
 	
 		angular.forEach($scope.data.averages, function(value,key){
-			$scope.bar.labels.push(key);
-		 	$scope.bar.speed.data.push($scope.data.averages[key].speed);
-		 	$scope.bar.temperature.data.push($scope.data.averages[key].temperature);		 
-		 	$scope.bar.humidity.data.push($scope.data.averages[key].humidity);		 
+			$scope.bar.labels.push(key); // KEY is the country
+			
+		 	$scope.bar.speed.data.push($scope.data.averages[key]["car.kph"]);
+		 	$scope.bar.engine.data.push($scope.data.averages[key]["car.rpm"]);
+			
+		 	$scope.bar.temperature.data.push($scope.data.averages[key].temp);		 
+		 	$scope.bar.humidity.data.push($scope.data.averages[key].hum);		 
 			
 		});
 		
@@ -208,8 +222,12 @@ function mainControllerFct($scope, $http, $interval){
 		
 }
 
+function ends(string,ending) {
+	return string.endsWith(ending);
+}
 
 function timeConverter(UNIX_timestamp){
+	
   var a = new Date(UNIX_timestamp );
   var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
   var year = a.getFullYear();
